@@ -1,6 +1,5 @@
 LazyGardener
 ==========
-[logo](public/img/logo.svg)
 Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at the moment) in the garden and real-time charts.
 
 * All soil moisture data are harvested wirelessly over nRF24L01
