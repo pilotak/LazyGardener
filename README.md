@@ -1,5 +1,6 @@
 LazyGardener
 ==========
+[logo](public/img/logo.svg)
 Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at the moment) in the garden and real-time charts.
 
 * All soil moisture data are harvested wirelessly over nRF24L01
@@ -11,7 +12,7 @@ Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at
 ```Shell
 sudo apt-get update
 sudo apt-get install mysql-server --fix-missing
-# you will be prompt to set username and root, i have choosen "root" & "root"
+# you will be prompt to set username and password, i have choosen "root" & "root"
 ```
 ###Create new database
 ```Shell
@@ -20,6 +21,7 @@ mysql -u [username] -p
 ```SQL
 CREATE DATABASE raspi
 USE raspi;
+
 CREATE TABLE emails (
   id int(10) unsigned NOT NULL AUTO_INCREMENT,
   sensor_id smallint(5) unsigned NOT NULL,
