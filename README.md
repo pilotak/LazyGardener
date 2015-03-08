@@ -7,6 +7,19 @@ Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at
 * For temperature are used two DS18B20 - one for outside temperature and one monitoring Raspberry Pi in the box as it also contains two battery chargers and two power supplies: ~24V for valves & =5V for chargers and Raspberry Pi
 
 #Prepare Raspberry
+##Allow I2C & SPI
+```Shell
+sudo apt-get install python-dev
+sudo nano /etc/modules
+	i2c-bcm2708 
+	i2c-dev
+
+sudo apt-get install python-smbus
+    
+sudo nano /etc/modprobe.d/raspi-blacklist.conf
+#blacklist spi-bcm2708
+#blacklist i2c-bcm2708
+```
 ##Install MySQL
 ```Shell
 sudo apt-get update
@@ -21,43 +34,43 @@ mysql -u [username] -p
 CREATE DATABASE raspi
 USE raspi;
 
-CREATE TABLE emails (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  sensor_id smallint(5) unsigned NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE probes (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  sensor_id smallint(5) unsigned NOT NULL,
-  `value` smallint(5) unsigned NOT NULL,
-  voltage float NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE rain (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `timestamp` int(10) unsigned NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE temperature (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  temp_id tinyint(4) unsigned NOT NULL,
-  temp float NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-CREATE TABLE valve (
-  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-  valve_id smallint(6) NOT NULL,
-  `status` tinyint(1) unsigned NOT NULL,
-  `timestamp` int(10) NOT NULL,
-  PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	CREATE TABLE emails (
+	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+	  sensor_id smallint(5) unsigned NOT NULL,
+	  `timestamp` int(10) unsigned NOT NULL,
+	  PRIMARY KEY (id)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	
+	CREATE TABLE probes (
+	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+	  sensor_id smallint(5) unsigned NOT NULL,
+	  `value` smallint(5) unsigned NOT NULL,
+	  voltage float NOT NULL,
+	  `timestamp` int(10) unsigned NOT NULL,
+	  PRIMARY KEY (id)
+	) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	
+	CREATE TABLE rain (
+	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+	  `timestamp` int(10) unsigned NOT NULL,
+	  PRIMARY KEY (id)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	
+	CREATE TABLE temperature (
+	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+	  temp_id tinyint(4) unsigned NOT NULL,
+	  temp float NOT NULL,
+	  `timestamp` int(10) unsigned NOT NULL,
+	  PRIMARY KEY (id)
+	) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+	
+	CREATE TABLE valve (
+	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+	  valve_id smallint(6) NOT NULL,
+	  `status` tinyint(1) unsigned NOT NULL,
+	  `timestamp` int(10) NOT NULL,
+	  PRIMARY KEY (id)
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ```
 
 ##Install Node.js
