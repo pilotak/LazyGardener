@@ -49,14 +49,14 @@ module.exports = function(mysql, cron){
 									}
 
 									mailOptions.html = util.format("Baterie sensoru '%d' jsou téměř vybité: %d V", sensor_id, voltage);
-									/*gmail.sendMail(mailOptions, function(error, info){
+									gmail.sendMail(mailOptions, function(error, info){
 										if(!error){
 											console.log('Message sent: ' + info.response);
 										}
 										else{
 											console.log("Error when sending email:", error);
 										}
-									});*/
+									});
 								});
 							}
 						});
