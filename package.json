@@ -1,0 +1,31 @@
+{
+  "name": "LazyGardener",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Pavel Slama",
+  "main": "app.js",
+  "dependencies": {
+    "basic-auth": "^1.0.0",
+    "body-parser": "~1.10.2",
+    "cron": "^1.0.6",
+    "date-format-lite": "~0.6.0",
+    "ds18b20": "~0.0.2",
+    "ejs": "~2.1.4",
+    "express": "~4.11.1",
+    "nodemailer": "^1.3.1",
+    "nrf": "~0.8.2",
+    "onoff": "~1.0.0",
+    "serve-favicon": "~2.2.0",
+    "socket.io": "~1.3.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-autoprefixer": "^2.2.0",
+    "grunt-combine-mq": "^0.6.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-cssmin": "^0.12.2",
+    "grunt-contrib-uglify": "^0.8.0",
+    "grunt-contrib-less": "~0.8.2",
+    "grunt-contrib-watch": "^0.6.1"
+  }
+}

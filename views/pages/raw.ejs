@@ -1,0 +1,15 @@
+<% include ../partials/head %>
+<% include ../partials/header %>
+<div class="container-fluid" role="main">
+	<ul class="raw-messages"></ul>
+</div>
+<script>
+jQuery(document).ready(function() {
+	var socket = io();
+
+	socket.on('rf-data', function(data){
+		$('.raw-messages').append($('<li>').text(data.datetime + ": " + data.data));
+	});
+});
+</script>
+<% include ../partials/footer %>

@@ -1,0 +1,23 @@
+<header>
+	<img src="img/logo.svg" alt="logo">
+	<nav>
+		<ul>
+			<li class="hours-6">
+				<a href="/?hours=6">6h</a>
+			</li>
+			<li class="hours-24">
+				<a href="/?hours=24">24h</a>
+			</li>
+			<li class="hours-48">
+				<a href="/?hours=48">48h</a>
+			</li>
+			<li class="hours-64">
+				<a href="/?hours=64">64h</a>
+			</li>
+			<li class="weather">
+				<a href="/weather">Počasí</a>
+			</li>
+		</ul>
+	</nav>
+	<hr class="<%= typeof hours!='undefined' ? "hours-" + hours : '' %>">
+</header>
