@@ -120,6 +120,9 @@ npm install -g grunt-cli
 
 ##Installing modules
 ```Shell
+sudo apt-get install git
+git clone git://github.com/pilotak/LazyGardener.git
+cd ./LazyGardener
 npm install
 bower install
 ```
