@@ -2,7 +2,7 @@ LazyGardener
 ==========
 Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at the moment) in the garden and real-time charts.
 
-* All soil moisture data are harvested wirelessly over nRF24L01
+* All soil moisture data are harvested [wirelessly over nRF24L01](../../../LazyGardener-probes)
 * Rain gauge is the WH1080 connected to Raspberry Pi
 * For temperature are used two DS18B20 - one for outside temperature and one monitoring Raspberry Pi in the box as it also contains two battery chargers and two power supplies: ~24V for valves & =5V for chargers and Raspberry Pi
 
