@@ -80,6 +80,7 @@ sudo dpkg -i node_latest_armhf.deb
 sudo npm install -g node-gyp
 sudo npm install -g forever
 sudo npm install -g bower
+sudo npm install -g grunt-cli
 ```
 ##Create daemon to run node.js on start up & auto-restart on code change
 ```Shell
@@ -113,12 +114,8 @@ sudo nano /etc/init.d/LazyGardener
 
 	exit 0
 ```
-#Preparing environment
-```Shell
-npm install -g grunt-cli
-```
 
-##Installing modules
+##Install modules
 ```Shell
 sudo apt-get install git
 git clone git://github.com/pilotak/LazyGardener.git
