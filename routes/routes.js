@@ -22,4 +22,10 @@ module.exports = function(app, io, mysql, rain_gauge_precision){
 			rain_gauge_precision: rain_gauge_precision
 		});
 	});
+	app.get('/rf', function(req, res, next) {
+		res.render('pages/rf', {
+			page: "rf",
+			title: 'zkouška',
+		});
+	});
 };

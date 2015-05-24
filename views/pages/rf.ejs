@@ -1,0 +1,18 @@
+<% include ../partials/head %>
+<% include ../partials/header %>
+<div class="container-fluid" role="main">
+	<form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+</div>
+<script>
+jQuery(document).ready(function() {
+	var socket = io();
+	$('form').submit(function(){
+		socket.emit('433mhz', {id: 3, value: $('#m').val()});
+		$('#m').val('');
+		return false;
+	});
+});
+</script>
+<% include ../partials/footer %>

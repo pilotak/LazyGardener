@@ -1,9 +1,9 @@
 function valve_control (data){
 	var valve = [
-		[{object: new gpio(21, 'out'), id: 1}],
-		[{object: new gpio(13, 'out'), id: 2}],
-		[{object: new gpio(19, 'out'), id: 3}],
-		[{object: new gpio(26, 'out'), id: 4}]
+		[{object: new gpio(12, 'out'), id: 1}],
+		[{object: new gpio(20, 'out'), id: 2}],
+		[{object: new gpio(13, 'out'), id: 3}],
+		[{object: new gpio(19, 'out'), id: 4}]
 	];
 
 	for (var i = 0; i < valve.length; i++) {

@@ -35,7 +35,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', login.basicAuth('pavel', 'heslo'));
+app.use('/', login.basicAuth(user, password));
 
 
 nrf.setStates({EN_DPL: 0});
@@ -67,11 +67,11 @@ eval(fs.readFileSync(path.join(__dirname, 'js', 'node_functions.js'))+'');
 valve_control({status: 0, all: 1});
 
 require('./routes/routes')(app, io, mysql, rain_gauge_precision);
-require('./routes/temp')(io, mysql, cron);
+require('./routes/temp')(io, gpio, mysql, cron);
 require('./routes/gpio')(io, gpio, mysql, valve_control);
 require('./routes/queries')(io, mysql);
 require('./routes/mail')(mysql, cron);
-
+require('./routes/i2c')(io, mysql, cron);
 
 
 // catch 404 and forward to error handler

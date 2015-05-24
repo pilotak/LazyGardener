@@ -1,7 +1,7 @@
 module.exports = function(io, gpio, mysql, valve_control){
 	var dateFormat	= require('date-format-lite');
 	var max_on_time = 1000*60*15; //15 minute
-	var button = new gpio(5, 'in', 'both');
+	var button = new gpio(21, 'in', 'both');
 	var event;
 
 	button.watch(function(err, state) {
