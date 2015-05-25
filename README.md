@@ -117,10 +117,13 @@ sudo nano /etc/init.d/LazyGardener
 
 ##Install modules
 ```Shell
+#reboot first
+sudo reboot
+
 sudo apt-get install git
 git clone git://github.com/pilotak/LazyGardener.git
 cd ./LazyGardener
-npm install
+sudo npm install
 bower install
 ```
 
