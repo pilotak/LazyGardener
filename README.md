@@ -10,15 +10,23 @@ Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at
 ##Allow I2C & SPI
 ```Shell
 sudo apt-get install python-dev
+sudo apt-get install python-smbus
+sudo apt-get install i2c-tools
+
 sudo nano /etc/modules
+	snd-bcm2835
 	i2c-bcm2708 
 	i2c-dev
-
-sudo apt-get install python-smbus
     
 sudo nano /etc/modprobe.d/raspi-blacklist.conf
 #blacklist spi-bcm2708
 #blacklist i2c-bcm2708
+
+sudo nano /boot/config.txt
+#add
+dtparam=spi=on
+dtparam=i2c1=on
+dtparam=i2c_arm=on
 ```
 ##Install MySQL
 ```Shell
@@ -117,9 +125,6 @@ sudo nano /etc/init.d/LazyGardener
 
 ##Install modules
 ```Shell
-#reboot first
-sudo reboot
-
 sudo apt-get install git
 git clone git://github.com/pilotak/LazyGardener.git
 cd ./LazyGardener
