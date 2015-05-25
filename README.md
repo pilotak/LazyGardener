@@ -84,6 +84,9 @@ USE raspi;
 
 ##Install Node.js
 ```Shell
+#but reboot first in order to get SPI, I2C and 1-Wire working
+sudo reboot
+
 wget http://node-arm.herokuapp.com/node_latest_armhf.deb
 sudo dpkg -i node_latest_armhf.deb
 sudo npm install -g node-gyp
