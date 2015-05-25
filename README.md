@@ -27,6 +27,7 @@ sudo nano /boot/config.txt
 dtparam=spi=on
 dtparam=i2c1=on
 dtparam=i2c_arm=on
+dtoverlay=w1-gpio,gpiopin=4,pullup=on
 ```
 ##Install MySQL
 ```Shell
