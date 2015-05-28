@@ -21,6 +21,7 @@ module.exports = function(app, io, mysql, rx, tx, send, fs){
 		var raw = d.toString().split("").reverse().join("");
 		var toWrite = util.format(datetime, " ", raw, "\n");
 		var data = raw.split("/");
+		//console.log(toWrite);
 
 		if (data[0] > 0) {
 			fs.appendFile(path.resolve(__dirname, "..", "logs", "rf24.log"), toWrite, encoding='utf8', function (err) {

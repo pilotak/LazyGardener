@@ -173,7 +173,7 @@ function charts(hours){
 
 					return to_return;
 				});
-				//console.debug("chart:" + JSON.stringify(chart[i].sensors));
+				console.debug("chart:" + JSON.stringify(chart[i].sensors));
 			}
 
 			//last on
@@ -184,7 +184,7 @@ function charts(hours){
 
 						var $element = $("#"+chart[ii].element).next().find("time");
 
-						$element.attr("datetime", time.format("isoUtcDateTime"));
+						$element.attr("datetime", time.format("iso"));
 						$element.text(time.format("D.M. hh:mm:ss"));
 						$element.timeago();
 					}
@@ -205,7 +205,7 @@ function charts(hours){
 
 						chart[ii].data.splice(0,1);
 						chart[ii].data.push(toPush);
-						//console.debug(JSON.stringify(toPush));
+						console.debug(JSON.stringify(toPush));
 
 						while(chart[ii].events.length > 0){
 							if(chart[ii].events[0][0] < chart[ii].data[0].timestamp){

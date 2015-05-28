@@ -153,22 +153,16 @@ header {
 	img {
 		transition: height @anim-duration;
 		height: auto;
-		width: 70%;
-		margin: 0 auto 10px auto;
-		max-height: 75px;
+		margin: 5px 0 5px 10px;
+		max-height: 50px;
 
 		@media (min-width: @screen-xs) {
-			/* height: @logo-img-height;
-			width: auto;
-			margin: round((@header-height-xs - @header-hr - @logo-img-height)/2) 0 0 10px;
-			padding: 0; */
 			width: 55%;
 		}
 
 		@media (min-width: @screen-sm) {
-			max-height: auto;
+			max-height: 60px;
 			width: auto;
-			height: @logo-img-height-sm;
 			margin: round((@header-height-sm - @header-hr - @logo-img-height-sm)/2) 0 0 20px;
 		}
 	}

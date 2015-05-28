@@ -1,12 +1,12 @@
 module.exports = function(grunt) {
 grunt.initConfig({
   less: {
-    dev: {
+    bootstrap: {
       options: {
         compress: false
       },
       files: {
-        "./public/css/dev.css": "./less/main.less" // destination file and source file
+        "./public/css/bootstrap.css": ["./less/bootstrap.less"]
       }
     },
     main: {
@@ -14,24 +14,20 @@ grunt.initConfig({
         compress: false
       },
       files: {
-        "./public/css/style.css": ["./less/bootstrap.less"]
+        "./public/css/main.css": ["./less/main.less"]
       }
     }
   },
   concat: {
-      dev: {
-        src: "./js/dev.js",
-        dest: "./public/js/dev.js",
-        nonull: true
-      },
       main: {
         src: ["./bower_components/raphael/raphael-min.js",
-              "./bower_components/morrisjs/morris.min.js",
+              "./bower_components/morrisjs/morris.js",
               "./bower_components/timeago/jquery.timeago.js",
               "./bower_components/timeago/locales/jquery.timeago.cs.js",
               "./node_modules/date-format-lite/dist/index-min.js",
+              "./public/js/main.js"
             ],
-        dest: "./public/js/build.js",
+        dest: "./public/js/scripts.js",
         nonull: true
       }
     },
@@ -41,16 +37,23 @@ grunt.initConfig({
             preserveComments: false
           },
           files: {
-              './public/js/jquery.min.js': ['./bower_components/jquery/dist/jquery.js'],
-              './public/js/scripts.min.js': ["./public/js/build.js", "./js/dev.js"]
+              './public/js/scripts.min.js': ["./public/js/scripts.js"]
+          }
+      },
+      jquery: {
+          options: {
+            preserveComments: false
+          },
+          files: {
+              './public/js/jquery.min.js': ['./bower_components/jquery/dist/jquery.js']
           }
       }
     },
     combine_mq: {
       main: {
         expand: true,
-        src: './public/css/style.css'
-      },
+        src: './public/css/bootstrap.css'
+      }
     },
     autoprefixer: {
       main: {
@@ -58,7 +61,7 @@ grunt.initConfig({
           map: false,
           browsers: ['last 3 versions', 'ie 11']
         },
-        src: './public/css/style.css'
+        src: ['./public/css/bootstrap.css','./public/css/main.css']
       },
     },
     cssmin: {
@@ -68,26 +71,11 @@ grunt.initConfig({
         },
         files: {
           './public/css/style.min.css':["./bower_components/morrisjs/morris.css",
-                                        "./public/css/style.css"
+                                        './public/css/bootstrap.css',
+                                        "./public/css/main.css"
                                        ]
         }
       },
-    },
-    watch: {
-      less: {
-        files: ['./less/*.less'],
-        tasks: ['less:dev'],
-        options: {
-          livereload: true,
-        }
-      },
-      js: {
-        files: ['./js/*.js'],
-        tasks: ['concat:dev'],
-        options: {
-          livereload: true,
-        }
-      }
     }
 });
 
@@ -97,14 +85,13 @@ grunt.loadNpmTasks('grunt-contrib-uglify');
 grunt.loadNpmTasks('grunt-combine-mq');
 grunt.loadNpmTasks('grunt-autoprefixer');
 grunt.loadNpmTasks('grunt-contrib-cssmin');
-grunt.loadNpmTasks('grunt-contrib-watch');
 
 grunt.registerTask('default', [
-    'less:main',
+    'less',
     'autoprefixer',
     'combine_mq',
     'cssmin',
-    'concat:main',
-    'uglify',
+    'concat',
+    'uglify:main',
   ]);
 };
