@@ -136,6 +136,15 @@ sudo npm install
 bower install
 ```
 
+##Fix morris.js version
+you need version 0.5.1 but 0.5.0 was downloaded (don't ask me why) so lets fix it:
+* copy content of [this]https://raw.githubusercontent.com/morrisjs/morris.js/master/morris.js file
+* locate
+```
+/home/pi/LazyGardener/bower_components/morrisjs/morris.js
+```
+* and replace it's content to newest version 
+
 ##Compile all files
 ```Shell
 grunt
