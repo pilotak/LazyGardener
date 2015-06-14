@@ -87,11 +87,22 @@ grunt.loadNpmTasks('grunt-autoprefixer');
 grunt.loadNpmTasks('grunt-contrib-cssmin');
 
 grunt.registerTask('default', [
-    'less',
-    'autoprefixer',
-    'combine_mq',
-    'cssmin',
-    'concat',
-    'uglify:main',
-  ]);
+  'less',
+  'autoprefixer',
+  'combine_mq',
+  'cssmin',
+  'concat',
+  'uglify:main',
+]);
+
+grunt.registerTask('js', [
+  'concat',
+  'uglify:main',
+]);
+
+grunt.registerTask('css', [
+  'less:main',
+  'autoprefixer',
+  'cssmin'
+]);
 };

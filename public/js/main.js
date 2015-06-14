@@ -88,6 +88,8 @@ function charts(hours){
 				}
 			}
 
+			$(".loader-container").remove();
+
 			//generate charts
 			for (var i = 0; i < chart.length; i++) {
 				var len = chart[i].sensors.length;
@@ -261,6 +263,14 @@ function weather(rain_gauge_precision){
 				id: 0,
 				data: [],
 				colour: ["#F3931A"]
+			},
+			{
+				element: "chart2",
+				title: "Teplota venku",
+				object: null,
+				id: 1,
+				data: [],
+				colour: ["#C1C959"]
 			}
 		];
 		var rainChart = {
@@ -291,7 +301,7 @@ function weather(rain_gauge_precision){
 						var end = new Date(next_day);
 
 						while(start < end){
-							rainChart.data.push({datetime: start.format("YYYY-MM-DD"), value: 0});           
+							rainChart.data.push({datetime: start.format("YYYY-MM-DD"), value: 0});
 
 							var newDate = start.setDate(start.getDate() + 1);
 							start = new Date(newDate);
@@ -302,6 +312,9 @@ function weather(rain_gauge_precision){
 					rainChart.data.push({datetime: data[0][i].datetime.date("YYYY-MM-DD"), value: data[0][i].value});
 				}
 			}
+
+			$(".loader-container").remove();
+			$(".show-hidden").css('display', 'table-cell');
 
 			rainChart.object = Morris.Bar({
 				element: rainChart.element,

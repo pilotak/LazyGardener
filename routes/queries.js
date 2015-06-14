@@ -32,7 +32,7 @@ module.exports = function(io, mysql){
 						console.log("Error when selecting from database");
 					}
 
-					connection.query("SELECT * FROM (SELECT temp_id, temp, timestamp FROM temperature WHERE timestamp < UNIX_TIMESTAMP(TIMESTAMPADD( HOUR, 48, NOW())) ORDER BY timestamp DESC) as result ORDER by timestamp ASC;", function(err2, temp) {
+					connection.query("SELECT * FROM (SELECT temp_id, temp, timestamp FROM temperature WHERE timestamp > UNIX_TIMESTAMP(TIMESTAMPADD( HOUR, -24, NOW())) ORDER BY timestamp DESC) as result ORDER by timestamp ASC;", function(err2, temp) {
 						if (err2) {
 							console.log("Error when selecting from database");
 						}
