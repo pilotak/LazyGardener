@@ -1,15 +1,25 @@
-module.exports = function(app, io, mysql, rx, tx, send, fs){
+module.exports = function(app, io, mysql, rx, tx, send, fs, i2c){
 	var dateFormat	= require('date-format-lite');
 	var path		= require('path');
 	var util		= require('util');
+	var ATtiny      = new i2c(0x18, {device: '/dev/i2c-1', debug: false});
+		ATtiny.setAddress(0x4);
 
 	io.sockets.on('connection', function(socket){
-		var datetime = new Date((new Date()).valueOf() + 1000*3600);
-		datetime = datetime.format('YYYY-MM-DD hh:mm:ss');
-		console.log(datetime, socket.handshake.address, 'has connected');
-		socket.on('send', function (data) {
+		socket.on('2.4ghz', function (data) {
 			console.log('message: ' + data);
 			send(data);
+		});
+
+		socket.on('433mhz', function (data) {
+			ATtiny.writeBytes(1,[data.id,data.value], function(err) { // function 1
+				if(err === null){
+					console.log("I2C sent:", data.id, data.value);
+				}
+				else {
+					console.log("I2C error when sending:", err);
+				}
+			});
 		});
 	});
 

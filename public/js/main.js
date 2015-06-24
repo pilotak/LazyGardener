@@ -294,7 +294,7 @@ function weather(rain_gauge_precision){
 					var next_day = data[0][next_record].datetime;
 
 					if (Number(day)+1 == next_day.date("D")) {
-						rainChart.data.push({datetime: data[0][i].datetime.date("YYYY-MM-DD"), value: (data[0][i].value)*rain_gauge_precision});
+						rainChart.data.push({datetime: data[0][i].datetime.date("YYYY-MM-DD"), value: roundToOne(data[0][i].value*rain_gauge_precision)});
 					}
 					else { // fill with zero until next available day
 						var start = new Date(data[0][i].datetime);
@@ -309,7 +309,7 @@ function weather(rain_gauge_precision){
 					}
 				}
 				else { // last record
-					rainChart.data.push({datetime: data[0][i].datetime.date("YYYY-MM-DD"), value: data[0][i].value});
+					rainChart.data.push({datetime: data[0][i].datetime.date("YYYY-MM-DD"), value: roundToOne(data[0][i].value*rain_gauge_precision)});
 				}
 			}
 
@@ -418,4 +418,8 @@ function weather(rain_gauge_precision){
 			rainChart.object.setData(rainChart.data);
 		});
 	});
+}
+
+function roundToOne(num) {    
+    return +(Math.round(num + "e+1")  + "e-1");
 }

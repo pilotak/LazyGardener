@@ -1,31 +1,24 @@
-var express        = require('express');
-var app            = express();
-var path           = require('path');
-var favicon        = require('serve-favicon');
-var bodyParser     = require('body-parser');
-var io             = require('socket.io').listen(app.listen(3000));
-var gpio           = require('onoff').Gpio;
-var login          = require('./routes/login');
-var cron           = require('cron').CronJob;
-var fs             = require('fs');
+var express        = require('express'),
+	app            = express(),
+	path           = require('path'),
+	favicon        = require('serve-favicon'),
+	bodyParser     = require('body-parser'),
+	io             = require('socket.io').listen(app.listen(3000)),
+	gpio           = require('onoff').Gpio,
+	config         = require('./config/config'),
+	login          = require('./routes/login'),
+	cron           = require('cron').CronJob,
+	fs             = require('fs'),
+	i2c            = require('i2c'),
+	nrf            = require("nrf").connect(config.spiDev, config.cePin, config.irqPin);
 
 
 var mysql = require('mysql').createPool({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'root',
-  database : 'raspi'
+	host     : config.mysql_host,
+	user     : config.mysql_user,
+	password : config.mysql_pass,
+	database : config.mysql_db
 });
-
-var spiDev  = "/dev/spidev0.0";
-var cePin   = 24;
-var irqPin  = 25;
-var pipes   = [0xF0F0F0F0E3, 0xF0F0F0F0E2];
-var rain_gauge_precision = 0.3;
-var user = "***";
-var password = "***";
-
-var nrf = require("nrf").connect(spiDev, cePin, irqPin);
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -35,13 +28,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'bower_components')));
-app.use('/', login.basicAuth(user, password));
+app.use('/', login.basicAuth(config.www_user, config.www_pass));
 
 
 nrf.setStates({EN_DPL: 0});
 nrf.channel(0x4c).transmitPower('PA_MAX').dataRate('1Mbps').crcBytes(2).autoRetransmit({count:15, delay:4000}).begin(function () {
-	var rx = nrf.openPipe('rx', pipes[0]),
-	tx = nrf.openPipe('tx', pipes[0]);
+	var rx = nrf.openPipe('rx', config.pipes[0]),
+	tx = nrf.openPipe('tx', config.pipes[0]);
 
 	function send(data){
 		console.log("Sending...", data);
@@ -49,7 +42,7 @@ nrf.channel(0x4c).transmitPower('PA_MAX').dataRate('1Mbps').crcBytes(2).autoRetr
 		tx.write(String(data));
 	}
 
-	require('./routes/rf24')(app, io, mysql, rx, tx, send, fs);
+	require('./routes/rf')(app, io, mysql, rx, tx, send, fs, i2c);
 
 	tx.on('error', function (e) {
 		console.log("Error sending: ", e);
@@ -66,12 +59,11 @@ eval(fs.readFileSync(path.join(__dirname, 'js', 'node_functions.js'))+'');
 //set all valves to off after restart
 valve_control({status: 0, all: 1});
 
-require('./routes/routes')(app, io, mysql, rain_gauge_precision);
-require('./routes/temp')(io, gpio, mysql, cron);
+require('./routes/routes')(app, io, mysql, config.rain_gauge_precision);
+require('./routes/weather')(io, gpio, mysql, cron, i2c);
 require('./routes/gpio')(io, gpio, mysql, valve_control);
 require('./routes/queries')(io, mysql);
 require('./routes/mail')(mysql, cron);
-require('./routes/i2c')(io, mysql, cron);
 
 
 // catch 404 and forward to error handler

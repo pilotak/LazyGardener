@@ -1,17 +1,19 @@
 module.exports = function(mysql, cron){
-	var util = require('util');
-	var gmail = require('nodemailer').createTransport({
+	var util   = require('util'),
+		config = require('../config/config');
+
+	var gmail  = require('nodemailer').createTransport({
 		service: 'Gmail',
 		auth: {
-			user: '***@gmail.com',
-			pass: '****'
+			user: config.email,
+			pass: config.email_pass
 		}
 	});
 
 	var mailOptions = {
-		from: '***@gmail.com',
-		to: '***@gmail.com',
-		subject: 'LazyGardener: Baterie jsou téměr vybité',
+		from: config.email,
+		to: config.email,
+		subject: 'LazyGardener: Batteries are nearly dead',
 		text: '',
 		html: ''
 	};

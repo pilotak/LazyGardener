@@ -5,6 +5,17 @@ function valve_control (data){
 		[{object: new gpio(13, 'out'), id: 3}],
 		[{object: new gpio(19, 'out'), id: 4}]
 	];
+	var ATtiny = new i2c(0x18, {device: '/dev/i2c-1', debug: false});
+	ATtiny.setAddress(0x4);
+
+	ATtiny.writeBytes(1,[3,data.status], function(err) { // function 1
+		if(err === null){
+			console.log("I2C sent:", 3, data.status);
+		}
+		else {
+			console.log("I2C error when sending:", err);
+		}
+	});
 
 	for (var i = 0; i < valve.length; i++) {
 		//OFF
