@@ -149,6 +149,10 @@ you need version 0.5.1 but 0.5.0 was downloaded (don't ask me why) so lets fix i
 ```Shell
 grunt
 ```
+##Do some settings
+```
+go to config/config.js
+```
 #And finally start
 ```Shell
 sudo service LazyGardener start

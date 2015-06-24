@@ -42,7 +42,7 @@ nrf.channel(0x4c).transmitPower('PA_MAX').dataRate('1Mbps').crcBytes(2).autoRetr
 		tx.write(String(data));
 	}
 
-	require('./routes/rf')(app, io, mysql, rx, tx, send, fs, i2c);
+	require('./routes/rf')(config, app, io, mysql, rx, tx, send, fs, i2c);
 
 	tx.on('error', function (e) {
 		console.log("Error sending: ", e);
@@ -54,17 +54,12 @@ nrf.channel(0x4c).transmitPower('PA_MAX').dataRate('1Mbps').crcBytes(2).autoRetr
 		//nrf.printDetails();
 	});
 });
-//include custom functions
-eval(fs.readFileSync(path.join(__dirname, 'js', 'node_functions.js'))+'');
-//set all valves to off after restart
-valve_control({status: 0, all: 1});
 
 require('./routes/routes')(app, io, mysql, config.rain_gauge_precision);
-require('./routes/weather')(io, gpio, mysql, cron, i2c);
-require('./routes/gpio')(io, gpio, mysql, valve_control);
+require('./routes/weather')(config, io, gpio, mysql, cron, i2c);
+require('./routes/gpio')(config, io, gpio, mysql, i2c);
 require('./routes/queries')(io, mysql);
-require('./routes/mail')(mysql, cron);
-
+require('./routes/mail')(config, mysql, cron);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

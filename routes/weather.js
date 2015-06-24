@@ -1,18 +1,19 @@
-module.exports = function(io, gpio, mysql, cron, i2c){
-	var ds18b20 = require('ds18b20');
-	var fan = new gpio(26, 'out');
-	var fanStatus = 0;
-	var address = ['28-000003b2d8fe', '28-000004a84917'];
-	var ATtiny = new i2c(0x18, {device: '/dev/i2c-1', debug: false});
-		ATtiny.setAddress(0x4);
+module.exports = function(config, io, gpio, mysql, cron, i2c){
+	var ds18b20		= require('ds18b20'),
+		fan			= new gpio(config.fan_pin, 'out'),
+		fanStatus	= 0;
+
+
+	var ATtiny      = new i2c(config.i2c_this, {device: config.i2cDev, debug: false});
+		ATtiny.setAddress(config.ATtiny_addr);
 
 
 	fan.write(fanStatus, function(fanErr){
 		if (fanErr) console.log("Fan switch error");
 	});
 
-	new cron('*/20 * * * *', function(){/*28-000004a84917*/
-		ds18b20.temperature(address[0], function(tempErr, value) {
+	new cron('*/20 * * * *', function(){
+		ds18b20.temperature(config.dallas_addr[0], function(tempErr, value) {
 			if(!tempErr){
 				var temp_id = 0;
 				console.log("Temperature", temp_id, ":",value);
@@ -41,7 +42,7 @@ module.exports = function(io, gpio, mysql, cron, i2c){
 			}
 		});
 
-		ds18b20.temperature(address[1], function(tempErr, value) {
+		ds18b20.temperature(config.dallas_addr[1], function(tempErr, value) {
 			if(!tempErr){
 				var temp_id = 1;
 				console.log("Temperature", temp_id, ":",value);
@@ -68,7 +69,7 @@ module.exports = function(io, gpio, mysql, cron, i2c){
 			if(err === null){
 				var value = res[0] << 8 | res[1];
 				var value2 = res[2] << 8 | res[3];
-				console.log(value, "-", value2);
+				console.log("Reading analog value from I2C:", value, ";", value2);
 			}
 			else {
 				console.log("I2C error when requesting from ATtiny:", err);

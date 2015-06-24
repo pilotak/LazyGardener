@@ -1,13 +1,11 @@
-module.exports = function(mysql, cron){
+module.exports = function(config, mysql, cron){
 	var util   = require('util'),
-		config = require('../config/config');
-
-	var gmail  = require('nodemailer').createTransport({
-		service: 'Gmail',
-		auth: {
-			user: config.email,
-			pass: config.email_pass
-		}
+		gmail  = require('nodemailer').createTransport({
+			service: 'Gmail',
+			auth: {
+				user: config.email,
+				pass: config.email_pass
+			}
 	});
 
 	var mailOptions = {

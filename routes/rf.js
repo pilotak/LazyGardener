@@ -1,9 +1,10 @@
-module.exports = function(app, io, mysql, rx, tx, send, fs, i2c){
-	var dateFormat	= require('date-format-lite');
-	var path		= require('path');
-	var util		= require('util');
-	var ATtiny      = new i2c(0x18, {device: '/dev/i2c-1', debug: false});
-		ATtiny.setAddress(0x4);
+module.exports = function(config, app, io, mysql, rx, tx, send, fs, i2c){
+	var dateFormat	= require('date-format-lite'),
+		path		= require('path'),
+		util		= require('util');
+
+	var ATtiny      = new i2c(config.i2c_this, {device: config.i2cDev, debug: false});
+		ATtiny.setAddress(config.ATtiny_addr);
 
 	io.sockets.on('connection', function(socket){
 		socket.on('2.4ghz', function (data) {

@@ -1,4 +1,4 @@
-module.exports={
+module.exports = {
 	"mysql_host"			:		"localhost",
 	"mysql_user"			:		"root",
 	"mysql_pass"			:		"root",
@@ -7,9 +7,21 @@ module.exports={
 	"irqPin"				:		25,
 	"spiDev"				:		"/dev/spidev0.0",
 	"pipes"					:		[0xF0F0F0F0E3, 0xF0F0F0F0E2],
-	"rain_gauge_precision"	:		0.3,
+	"rain_gauge_precision"	:		0.3, /* unit: mm ;check your rain gauge*/
 	"www_user"				:		"***",
 	"www_pass"				:		"***",
 	"email"					:		"***",
-	"email_pass"			:		"***"
+	"email_pass"			:		"***",
+	"i2cDev"				:		"/dev/i2c-1",
+	"i2c_this"				:		0x18,
+	"ATtiny_addr"			:		0x4,
+	"dallas_addr"			:		['28-000003b2d8fe', '28-000004a84917'],
+	"fan_pin"				:		26,
+	"valve1_pin"			:		12,
+	"valve2_pin"			:		20,
+	"valve3_pin"			:		13,
+	"valve4_pin"			:		19,
+	"gaunge_pin"			:		21,
+	"valve_timout"			:		[1000*60*7,1000*60*10,1000*60*15,1000*60*15],
+	"remote_relay_id"		:		3,
 };
