@@ -10,7 +10,8 @@ var express        = require('express'),
 	cron           = require('cron').CronJob,
 	fs             = require('fs'),
 	i2c            = require('i2c'),
-	nrf            = require("nrf").connect(config.spiDev, config.cePin, config.irqPin);
+	nrf            = require("nrf").connect(config.spiDev, config.cePin, config.irqPin),
+	async          = require('async');
 
 
 var mysql = require('mysql').createPool({
@@ -56,9 +57,9 @@ nrf.channel(0x4c).transmitPower('PA_MAX').dataRate('1Mbps').crcBytes(2).autoRetr
 });
 
 require('./routes/routes')(app, io, mysql, config.rain_gauge_precision);
-require('./routes/weather')(config, io, gpio, mysql, cron, i2c);
+require('./routes/weather')(config, io, gpio, mysql, cron, i2c, async);
 require('./routes/gpio')(config, io, gpio, mysql, i2c);
-require('./routes/queries')(io, mysql);
+require('./routes/queries')(io, mysql, async);
 require('./routes/mail')(config, mysql, cron);
 
 // catch 404 and forward to error handler

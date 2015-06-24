@@ -1,6 +1,5 @@
 module.exports = function(config, io, gpio, mysql, i2c){
 	var dateFormat	= require('date-format-lite'),
-		max_on_time = 1000*60*15, //15 minute
 		gauge		= new gpio(config.gaunge_pin, 'in', 'both'),
 		event;
 
