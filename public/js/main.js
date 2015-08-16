@@ -189,6 +189,7 @@ function charts(hours){
 						$element.attr("datetime", time.format("iso"));
 						$element.text(time.format("D.M. hh:mm:ss"));
 						$element.timeago();
+						$.timeago.settings.refreshMillis = 2000;
 					}
 				}
 			}
@@ -276,9 +277,96 @@ function weather(rain_gauge_precision){
 		var rainChart = {
 			element: "chart1",
 			title: "Srážky",
+			units: "mm",
 			object: null,
 			data: []
 		};
+		var otherCharts = [
+			{
+				element: "chart1",
+				title: "Srážky",
+				units: "mm",
+				dateFormat: "D.M.",
+				xLabelFormat: "D.M.",
+				type: "bar",
+				id: 2,
+				colour: ["pink"],
+				object: null,
+				data: []
+			},
+			{
+				element: "chart2",
+				title: "Teplota venku",
+				units: "°C",
+				dateFormat: "D.M. hh:mm",
+				xLabelFormat: "hh:mm",
+				type: "area",
+				id: 1,
+				colour: ["#C1C959"],
+				object: null,
+				data: []
+			},
+			{
+				element: "chart3",
+				title: "Teplota ovládací desky",
+				units: "°C",
+				dateFormat: "D.M. hh:mm",
+				xLabelFormat: "hh:mm",
+				type: "area",
+				id: 0,
+				colour: ["#F3931A"],
+				object: null,
+				data: []
+			},
+			{
+				element: "chart4",
+				title: "UV index",
+				units: "",
+				dateFormat: "D.M. hh:mm",
+				xLabelFormat: "hh:mm",
+				type: "line",
+				id: 3,
+				colour: ["red"],
+				object: null,
+				data: []
+			},
+			{
+				element: "chart5",
+				title: "Intenzita světla",
+				units: "lux",
+				dateFormat: "D.M. hh:mm",
+				xLabelFormat: "hh:mm",
+				type: "line",
+				id: 4,
+				colour: ["green"],
+				object: null,
+				data: []
+			},
+			{
+				element: "chart6",
+				title: "Tlak",
+				units: "hPa",
+				dateFormat: "D.M. hh:mm",
+				xLabelFormat: "hh:mm",
+				type: "area",
+				id: 5,
+				colour: ["blue"],
+				object: null,
+				data: []
+			},
+			{
+				element: "chart7",
+				title: "Vlhkost vzduchu",
+				units: "%",
+				dateFormat: "D.M. hh:mm",
+				xLabelFormat: "hh:mm",
+				type: "area",
+				id: 6,
+				colour: ["yellow"],
+				object: null,
+				data: []
+			}
+		];
 		var socket = io();
 
 		socket.emit('request-weather-data', {});

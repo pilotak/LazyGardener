@@ -11,8 +11,6 @@ module.exports = function(io, mysql, async){
 
 							callback(null, probe_result);
 						});
-
-						
 					},
 					function(callback){
 						connection.query("SELECT * FROM (SELECT valve_id, status, timestamp FROM valve WHERE timestamp > UNIX_TIMESTAMP(TIMESTAMPADD( HOUR, ?, NOW())) ORDER BY timestamp DESC) as result ORDER by timestamp ASC;", [data.hours], function(err, valve_result) {
@@ -22,8 +20,6 @@ module.exports = function(io, mysql, async){
 
 							callback(null, valve_result);
 						});
-
-						
 					},
 					function(callback){
 						connection.query("SELECT valve_id, status, timestamp FROM valve a WHERE a.timestamp = (SELECT MAX(timestamp) timestamp FROM valve b WHERE a.valve_id = b.valve_id AND status=1);", [data.hours], function(err, last_on_result) {
@@ -33,8 +29,6 @@ module.exports = function(io, mysql, async){
 
 							callback(null, last_on_result);
 						});
-
-						
 					}
 				], function(error, results) {
 					connection.release();

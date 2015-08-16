@@ -1,6 +1,8 @@
 module.exports = function(config, io, gpio, mysql, cron, i2c, async){
 	var ds18b20		= require('ds18b20'),
 		fan			= new gpio(config.fan_pin, 'out'),
+		bmp085 = require('bmp085-sensor'),
+		pressure = bmp085({address: config.BMP085_addr, mode: 3});
 		fanStatus	= 0;
 
 	var ATtiny      = new i2c(config.i2c_this, {device: config.i2cDev, debug: false});
@@ -11,7 +13,6 @@ module.exports = function(config, io, gpio, mysql, cron, i2c, async){
 		BH1750.setAddress(config.BH1750_addr);
 	var HTU21D      = new i2c(config.i2c_this, {device: config.i2cDev, debug: false});
 		HTU21D.setAddress(config.HTU21D_addr);
-
 
 	fan.write(fanStatus, function(fanErr){
 		if (fanErr) console.log("Fan switch error");
@@ -111,17 +112,35 @@ module.exports = function(config, io, gpio, mysql, cron, i2c, async){
 						}, 16);
 					}
 				});
-			}*/
+			},*/
+			/*function(callback){
+				pressure.read(function (err, data) {
+					console.log(data);
+					callback(null, 5);
+				});
+			},*/
+			/*function(callback){
+				BH1750.writeByte(0x10, function(err) {
+					if (err) {
+						console.log("BH1750:", err);
+					}
+					else {
+						setTimeout(function() {
+							BH1750.readBytes(2, 2, function(err, data) {
+								if (err) {
+									console.log("BH1750:", err);
+								} else {
+									var value = res[0] << 8 | res[1];
+									value = value/1.2;
+									console.log(data, ":", value);
+								}
+								callback(null, 6);
+							});
+						}, 20);
+					}
+				});
+			},*/
 		]);
-
-
-
-		
-
-
-		
-
-
 	}, null, true);
 
 
