@@ -24,4 +24,7 @@ module.exports = {
 	"gaunge_pin"			:		21,
 	"valve_timout"			:		[1000*60*7,1000*60*10,1000*60*15,1000*60*15],
 	"remote_relay_id"		:		3,
+	"BMP085_addr"			:		0x77,
+	"HTU21D_addr"			:		0x40,
+	"BH1750_addr"			:		0x23,
 };

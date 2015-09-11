@@ -57,10 +57,11 @@ nrf.channel(0x4c).transmitPower('PA_MAX').dataRate('1Mbps').crcBytes(2).autoRetr
 });
 
 require('./routes/routes')(app, io, mysql, config.rain_gauge_precision);
-require('./routes/weather')(config, io, gpio, mysql, cron, i2c, async);
+require('./routes/weather')(config, io, mysql, cron, i2c, async);
 require('./routes/gpio')(config, io, gpio, mysql, i2c);
 require('./routes/queries')(io, mysql, async);
 require('./routes/mail')(config, mysql, cron);
+require('./routes/fan')(config, io, gpio, mysql, cron);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

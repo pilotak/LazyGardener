@@ -7,7 +7,8 @@
   "dependencies": {
     "async": "^1.2.1",
     "basic-auth": "^1.0.1",
-    "bmp085-sensor": "0.0.4",
+    "sensor_bmp085": "^0.2.0",
+    "htu21d-i2c": "^0.1.0",
     "body-parser": "^1.12.4",
     "cron": "^1.0.9",
     "date-format-lite": "^0.7.1",
