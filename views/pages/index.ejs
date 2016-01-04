@@ -4,11 +4,16 @@
 	<div class="loader-container">
 		<div class="loader"></div>
 	</div>
-	<div id="chart1"></div>
-	<div id="chart2"></div>
-	<div id="chart3"></div>
+	<button data-id="1" data-status="1">jednička ON</button>
+	<button data-id="1" data-status="0">jednička OFF</button>
 </div>
 <script>
-	charts(-<%- hours %>);
+	//charts(-<%- hours %>);
+jQuery(document).ready(function($) {
+	$("body").on("click", "button", function(event) {
+		var socket = io();
+		socket.emit('valve', {valve: $(this).data("id"), status: $(this).data("status")});
+	});
+});
 </script>
 <% include ../partials/footer %>

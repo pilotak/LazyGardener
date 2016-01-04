@@ -2,12 +2,20 @@ LazyGardener
 ==========
 Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at the moment) in the garden and real-time charts.
 
-* All soil moisture data are harvested [wirelessly over nRF24L01](../../../LazyGardener-probes)
-* Rain gauge is the WH1080 connected to Raspberry Pi
-* For temperature are used two DS18B20 - one for outside temperature and one monitoring Raspberry Pi in the box as it also contains two battery chargers and two power supplies: ~24V for valves & =5V for chargers and Raspberry Pi
-* Onboard ATtiny85 controls 433mHz module and provides 2 analog readings, all over I2C
+* All soil moisture data are harvested [over WiFi soil probes](../../../LazyGardener-probes)
+* [Meteo station over "extended" I2C](../../../LazyGardener-meteo)
+* Integrated fan for cooling down in-box temperature uses DS18B20
+* Contains two battery chargers (for soil probes) and two power supplies: ~24V for valves & =5V for chargers and Raspberry Pi
 
-#Prepare Raspberry
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
+
+#Easy install
+```Shell
+wget https://raw.githubusercontent.com/pilotak/LazyGardener/master/install.sh
+chmod u+x install.sh
+sudo ./install.sh
+```
+#Manual install
 ##Allow I2C & SPI
 ```Shell
 sudo apt-get install python-dev
@@ -20,80 +28,41 @@ sudo nano /etc/modules
 	i2c-dev
     
 sudo nano /etc/modprobe.d/raspi-blacklist.conf
-#blacklist spi-bcm2708
-#blacklist i2c-bcm2708
+	#blacklist spi-bcm2708
+	#blacklist i2c-bcm2708
 
 sudo nano /boot/config.txt
-#add
-dtparam=spi=on
-dtparam=i2c1=on
-dtparam=i2c_arm=on
-dtoverlay=w1-gpio,gpiopin=4,pullup=on
-```
-##Install MySQL
-```Shell
-sudo apt-get update
-sudo apt-get install mysql-server --fix-missing
-# you will be prompt to set username and password, i have choosen "root" & "root"
-```
-###Create new database
-```Shell
-mysql -u [username] -p
-```
-```SQL
-CREATE DATABASE raspi
-USE raspi;
+	#add
+	dtparam=spi=on
+	dtparam=i2c1=on
+	dtparam=i2c_arm=on
+	dtoverlay=w1-gpio,gpiopin=4,pullup=on
 
-	CREATE TABLE emails (
-	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-	  sensor_id smallint(5) unsigned NOT NULL,
-	  `timestamp` int(10) unsigned NOT NULL,
-	  PRIMARY KEY (id)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	
-	CREATE TABLE probes (
-	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-	  sensor_id smallint(5) unsigned NOT NULL,
-	  `value` smallint(5) unsigned NOT NULL,
-	  voltage float NOT NULL,
-	  `timestamp` int(10) unsigned NOT NULL,
-	  PRIMARY KEY (id)
-	) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	
-	CREATE TABLE rain (
-	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-	  `timestamp` int(10) unsigned NOT NULL,
-	  PRIMARY KEY (id)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	
-	CREATE TABLE temperature (
-	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-	  temp_id tinyint(4) unsigned NOT NULL,
-	  temp float NOT NULL,
-	  `timestamp` int(10) unsigned NOT NULL,
-	  PRIMARY KEY (id)
-	) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-	
-	CREATE TABLE valve (
-	  id int(10) unsigned NOT NULL AUTO_INCREMENT,
-	  valve_id smallint(6) NOT NULL,
-	  `status` tinyint(1) unsigned NOT NULL,
-	  `timestamp` int(10) NOT NULL,
-	  PRIMARY KEY (id)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+sudo reboot
+```
+##Install InfluxDB
+```Shell
+sudo dpkg -i influxdb_0.9.6_armhf.deb
 ```
 
 ##Install Node.js
 ```Shell
-#but reboot first in order to get SPI, I2C and 1-Wire working
-sudo reboot
+wget https://nodejs.org/dist/v5.3.0/node-v5.3.0-linux-armv6l.tar.xz
+tar -xvf node-v5.3.0-linux-armv6l.tar.xz
+cd node-v5.3.0-linux-armv6l
+sudo cp -R * /usr/local/
 
-wget http://node-arm.herokuapp.com/node_latest_armhf.deb
-sudo dpkg -i node_latest_armhf.deb
+#check that node is installed correctly
+node -v
+
 sudo npm install -g node-gyp
 sudo npm install -g forever
 sudo npm install -g bower
 sudo npm install -g grunt-cli
+```
+## Grafana
+```Shell
+sudo dpkg -i grafana_2.6.0_armhf.deb
 ```
 ##Create daemon to run node.js on start up & auto-restart on code change
 ```Shell
@@ -104,6 +73,17 @@ sudo update-rc.d LazyGardener defaults
 ```Shell
 sudo nano /etc/init.d/LazyGardener
 	#!/bin/sh
+
+	### BEGIN INIT INFO
+	# Provides:          
+	# Required-Start:
+	# Required-Stop:
+	# Default-Start:     2 3 4 5
+	# Default-Stop:      0 1 6
+	# Short-Description: LazyGardener init file
+	# Description:       LazyGardener init file at boot
+	### END INIT INFO
+
 
 	export PATH=$PATH:/usr/local/bin
 	export NODE_PATH=$NODE_PATH:/usr/local/lib/node_modules
@@ -154,7 +134,13 @@ grunt
 ```
 go to config/config.js
 ```
+###Create the database
+```Shell
+node setup_db.js # or you can do it through InfluxDB http admin on port :8083
+```
 #And finally start
 ```Shell
 sudo service LazyGardener start
 ```
+
+Special thanks to [Nicolas](http://nicolas.steinmetz.fr/) for providing compiled Grafana and InfluxDB

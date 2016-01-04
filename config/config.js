@@ -1,30 +1,106 @@
 module.exports = {
-	"mysql_host"			:		"localhost",
-	"mysql_user"			:		"root",
-	"mysql_pass"			:		"root",
-	"mysql_db"				:		"raspi",
-	"cePin"					:		24,
-	"irqPin"				:		25,
-	"spiDev"				:		"/dev/spidev0.0",
-	"pipes"					:		[0xF0F0F0F0E3, 0xF0F0F0F0E2],
-	"rain_gauge_precision"	:		0.3, /* unit: mm ;check your rain gauge*/
-	"www_user"				:		"***",
-	"www_pass"				:		"***",
-	"email"					:		"***",
-	"email_pass"			:		"***",
-	"i2cDev"				:		"/dev/i2c-1",
-	"i2c_this"				:		0x18,
-	"ATtiny_addr"			:		0x4,
-	"dallas_addr"			:		['28-000003b2d8fe', '28-000004a84917'],
-	"fan_pin"				:		26,
-	"valve1_pin"			:		12,
-	"valve2_pin"			:		20,
-	"valve3_pin"			:		13,
-	"valve4_pin"			:		19,
-	"gaunge_pin"			:		21,
-	"valve_timout"			:		[1000*60*7,1000*60*10,1000*60*15,1000*60*15],
-	"remote_relay_id"		:		3,
-	"BMP085_addr"			:		0x77,
-	"HTU21D_addr"			:		0x40,
-	"BH1750_addr"			:		0x23,
-};
+  db: {
+    host: 'localhost',
+    user: 'root',
+    pass: 'root',
+    name: 'LazyGardener',
+    port: 8086
+  },
+  push_messages: {
+    email: {
+      enabled: false,
+      settings: { // nodemailer settings
+        service: 'Gmail',
+        auth: {
+          user: '***',
+          pass: '***'
+        }
+      }
+    },
+    gcm: {
+      enabled : false
+    },
+    interval: '*/1 * * * *' // in CRON like format
+  },
+  frontend: {
+    user: '***',
+    pass: '***',
+    port: 3000
+  },
+  api: {
+    port: 8000,
+    db: 'raw'
+  },
+  i2c: {
+    dev: '/dev/i2c-1',
+    this: 0x18
+  },
+  valve: [
+    {
+      pin: 5,
+      id: 1,
+      timeout: 1000 * 20, // 1000*60*7
+      name: 'Zelenina'
+    },
+    {
+      pin: 6,
+      id: 2,
+      timeout: 1000 * 12, // 1000*60*10
+      name: 'Ovoce'
+    },
+    {
+      pin: 13,
+      id: 3,
+      timeout: 1000 * 15, // 1000*60*15
+      name: 'Kytičky'
+    },
+    {
+      pin: 19,
+      id: 4,
+      timeout: 1000 * 12, // 1000*60*15
+      name: ''
+    }
+  ],
+  valve_power: {
+    enabled: true,
+    pin: 20,
+    delay: 1000 // how long to wait to switch on valves
+  },
+  meteo_station: {
+    enabled: false,
+    interval: '*/30 * * * * *', // in CRON like format
+    BMP085_addr: 0x77,
+    HTU21D_addr: 0x40,
+    BH1750_addr: 0x23,
+    hub_addr: 0x04
+  },
+  pump: {
+    enabled: false,
+    address: 'http://xxx.xxx.xxx.xxx'
+  },
+  auto_control: {
+    enabled : true,
+    interval:  '*/10 * * * * *', // in CRON like format
+    weather: {
+      enabled: true,
+      lat: 49.137243,
+      lng: 14.1084932
+    },
+    hours : {
+      on: 6,
+      off : 20
+    }
+  },
+  fan: {
+    enabled: true,
+    pin: 26,
+    too_hot: 28, // in °C
+    interval: '*/10 * * * *' // in CRON like format
+  },
+  probe: [
+    {
+      id: 1,
+      location: 1
+    }
+  ]
+}
