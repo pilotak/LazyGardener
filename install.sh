@@ -113,17 +113,27 @@ echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
 
-echo -e "\e[30;48;5;208mClone LazyGardener repo...\e[0m"
+echo -e "\e[30;48;5;208mInstall database...\e[0m"
 cd /home/$(logname)/
-git clone git://github.com/pilotak/LazyGardener.git
+https://nicolas.steinmetz.fr/influxdb/armv6/influxdb_0.9.6_armhf.deb
+dpkg -i influxdb_0.9.6_armhf.deb
+systemctl enable influxdb
+systemctl start influxdb
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
 
-echo -e "\e[30;48;5;208mInstall database...\e[0m"
+echo -e "\e[30;48;5;208mInstall Grafana...\e[0m"
+wget https://nicolas.steinmetz.fr/influxdb/armv6/grafana_2.6.0_armhf.deb
+dpkg -i grafana_2.6.0_armhf.deb
+/bin/systemctl start grafana-server
+echo -e "\e[30;48;5;208mDone\e[0m"
+echo
+echo
+
+echo -e "\e[30;48;5;208mClone LazyGardener repo...\e[0m"
 cd /home/$(logname)/
-wget http://demos.pihomeserver.fr/influxdb_0.8.6_armhf.deb
-dpkg -i influxdb_0.8.6_armhf.deb
+git clone git://github.com/pilotak/LazyGardener.git
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
@@ -137,7 +147,7 @@ echo
 
 echo -e "\e[30;48;5;208mInstall bower modules\e[0m"
 cd /home/$(logname)/LazyGardener
-bower install
+bower install --allow-root
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
@@ -152,15 +162,6 @@ echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
 
-echo -e "\e[30;48;5;208mSetup db\e[0m"
-service influxdb start
-cd /home/$(logname)/LazyGardener/install
-node setup_db.js
-echo -e "\e[30;48;5;208mDone\e[0m"
-echo
-echo
-
-
 echo -e "\e[30;48;5;208mCompile...\e[0m"
 cd /home/$(logname)/LazyGardener
 grunt
@@ -174,7 +175,8 @@ rm /home/$(logname)/install.sh
 rm -rf /home/$(logname)/LazyGardener/temp
 rm /home/$(logname)/node-v5.3.0-linux-armv6l.tar.xz
 rm -rf /home/$(logname)/node-v5.3.0-linux-armv6l
-rm /home/$(logname)/influxdb_0.8.6_armhf.deb
+rm /home/$(logname)/influxdb_0.9.6_armhf.deb
+rm /home/$(logname)/grafana_2.6.0_armhf.deb
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
@@ -185,5 +187,3 @@ chown -R $(logname) /home/$(logname)/LazyGardener/*
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
-
-service LazyGardener start

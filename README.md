@@ -12,6 +12,17 @@ Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at
 #Install
 ```Shell
 cd ~
-wget https://raw.githubusercontent.com/pilotak/LazyGardener/master/install/install.sh
-sudo ./install.sh
+wget https://raw.githubusercontent.com/pilotak/LazyGardener/master/install.sh
+chmod 777 ./install.sh
+#You would need to confirm a few prompts to confirm installation of packages
+sudo ./install.sh 
+```
+Now go to your Raspberry Pi ip address to port :8083 through web browser and create user and DB (you can create any name or password you like, but you have to update ./config/config.js)
+```SQL
+CREATE USER "root" WITH PASSWORD 'root' WITH ALL PRIVILEGES
+CREATE DATABASE "LazyGardener"
+```
+and than through SSH
+```Shell
+sudo service LazyGardener start
 ```

@@ -19,7 +19,7 @@
     "express": "^4.13.3",
     "htu21d-i2c": "^0.1.0",
     "i2c": "git://github.com/jnovack/node-i2c.git#patch-1",
-    "influx": "^3.4.0",
+    "influx": "^4.1.0",
     "json-http": "^1.0.2",
     "moment": "^2.11.0",
     "nodemailer": "^1.10.0",
