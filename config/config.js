@@ -18,14 +18,14 @@ module.exports = {
       }
     },
     gcm: {
-      enabled : false
+      enabled: false
     },
     interval: '*/1 * * * *' // in CRON like format
   },
   frontend: {
     user: '***',
     pass: '***',
-    port: 3000
+    port: 4000
   },
   api: {
     port: 8000,
@@ -79,16 +79,18 @@ module.exports = {
     address: 'http://xxx.xxx.xxx.xxx'
   },
   auto_control: {
-    enabled : true,
-    interval:  '*/10 * * * * *', // in CRON like format
+    enabled: true,
+    interval: '*/10 * * * *', // in CRON like format
     weather: {
       enabled: true,
       lat: 49.137243,
-      lng: 14.1084932
+      lng: 14.1084932,
+      units: 'metric',
+      api: ''
     },
-    hours : {
+    hours: {
       on: 6,
-      off : 20
+      off: 20
     }
   },
   fan: {

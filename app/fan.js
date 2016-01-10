@@ -40,13 +40,12 @@ new Cron(config.fan.interval, function () {
     }
   ], function done (err, temp, fan_status) {
     if (!err) {
-      logger.info("FAN", "temperature: ", temp, "fan is", (status ? 'on' : 'off'))
+      logger.info('FAN', 'temperature: ', temp, 'fan is', (fan_status ? 'on' : 'off'))
 
-      db.writePoint("fan", {temp: temp, status: fan_status}, function(err, response) {
-        if(!err) {
-          logger.debug("FAN", "Saved to db");
-        }
-        else {
+      db.writePoint('fan', {temp: temp, status: fan_status}, null, function (err, response) {
+        if (!err) {
+          logger.debug('FAN', 'Saved to db')
+        } else {
           logger.error('FAN', 'Error when saving to db')
         }
       })

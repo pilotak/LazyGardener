@@ -127,6 +127,8 @@ echo -e "\e[30;48;5;208mInstall Grafana...\e[0m"
 wget https://nicolas.steinmetz.fr/influxdb/armv6/grafana_2.6.0_armhf.deb
 dpkg -i grafana_2.6.0_armhf.deb
 /bin/systemctl start grafana-server
+systemctl enable grafana-server.service 
+systemctl start grafana-server.service
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo

@@ -4,10 +4,8 @@ var logger = require('../lib/logger')
 
 var client = influx({
   host: config.db.host,
-  port: config.db.port,
-  protocol: 'http',
   username: config.db.user,
-  password: config.db.pass,
+  password: config.db.password,
   database: config.db.name
 })
 

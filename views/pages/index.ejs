@@ -9,9 +9,11 @@
 </div>
 <script>
 	//charts(-<%- hours %>);
+
 jQuery(document).ready(function($) {
+	var socket = io();
+
 	$("body").on("click", "button", function(event) {
-		var socket = io();
 		socket.emit('valve', {valve: $(this).data("id"), status: $(this).data("status")});
 	});
 });

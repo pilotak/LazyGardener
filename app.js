@@ -7,7 +7,7 @@ var express = server.express
 var app = server.app
 var valve_control = require('./lib/valve_control')
 
-//switch all valves off on start
+// switch all valves off on start
 valve_control(false, false)
 
 // Configure express
@@ -20,7 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'bower_components')))
 
 // add routes
-require('.routes/default')(app)
+require('./routes/default')(app)
 
 if (config.meteo_station.enabled === true) {
   require('./app/meteo')
