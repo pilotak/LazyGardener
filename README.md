@@ -26,7 +26,7 @@ CREATE USER "root" WITH PASSWORD 'root' WITH ALL PRIVILEGES
 CREATE USER "api" WITH PASSWORD 'password'
 CREATE DATABASE "LazyGardener"
 ```
-_(of course you can create any name or password you like, but you have to update ./config/config.js)
+_(of course you can create any name or password you like, but you have to update ./config/config.js)_
 
 after you do some updates in ./config/config.js, finally start
 ```Shell
