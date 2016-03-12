@@ -5,13 +5,69 @@ var util = require('util')
 var logger = require('../lib/logger')
 var config = require('../config/config')
 var db = require('../config/db')
+var mqtt = require('mqtt')
+var email = require('nodemailer').createTransport(config.auto_control.email.settings)
+
+if (config.auto_control.email.enabled) {
+  var mailOptions = {
+    from: config.auto_control.email.settings.auth.user,
+    to: config.auto_control.email.settings.auth.user,
+    subject: '',
+    text: '',
+    html: ''
+  }
+}
+
+var client = mqtt.connect('mqtt://localhost')
+
+client.on('connect', function () {
+  client.subscribe({'/feeds/probe': 1})
+})
+
+client.on('message', function (topic, message, packet) {
+  message = message.toString()
+
+  try {
+    message = JSON.parse(message)
+
+    var presented = false
+
+    for (var ii = 0; ii < config.probe.length; ii++) {
+      if (config.probe[ii].id === message.id) {
+        presented = true
+      }
+    }
+
+    if (presented) {
+      for (var i = 0; i < message.d.length; i++) {
+        if (message.hasOwnProperty('v')) {
+          var voltage = parseFloat(parseInt(message.v, 10) / 10)
+
+          if (config.auto_control.email.enabled) {
+            mailOptions.html = util.format("Baterie sensoru '%d' jsou téměř vybité: %d V", message.id, voltage)
+
+            email.sendMail(mailOptions, function (error, info) {
+              if (!error) {
+                logger.info('AUTO', 'Email send: ' + info.response)
+              } else {
+                logger.error('AUTO', 'Error when sending email: ' + error)
+              }
+            })
+          }
+        }
+      }
+    } else {
+      logger.warn('AUTO', 'unknown probe', message.id)
+    }
+  } catch (e) {
+    logger.error('AUTO', 'Error when parsing incoming probe data', message, e)
+  }
+})
 
 async.waterfall([
   function get_weather (callback) {
-    // config.auto_control.weather.lat
-    // config.auto_control.weather.lng
     if (config.auto_control.weather.enabled) {
-      var url = util.format('http://api.openweathermap.org/data/2.5/forecast?lat=%d&lon=%d&units=%s&APPID=%s', 35, 39, config.auto_control.weather.units, config.auto_control.weather.api)
+      var url = util.format('http://api.openweathermap.org/data/2.5/forecast?lat=%d&lon=%d&units=%s&APPID=%s', config.auto_control.weather.lat, config.auto_control.weather.lng, config.auto_control.weather.units, config.auto_control.weather.api)
       var today_rain = 0
       var max_temp = null
       var earliest_rain = null
@@ -44,7 +100,7 @@ async.waterfall([
             earliest_rain: earliest_rain
           })
         } else {
-          logger.error('AUTO', "Can't get weather")
+          logger.error('AUTO', "Can't get weather", response)
           callback("Can't get weather")
         }
       })
@@ -52,27 +108,65 @@ async.waterfall([
       callback(null)
     }
   },
-  function db_data (data, callback) {
-    var valve = [
-      {
-        id: 1,
-        last_on: new Date().getTime(),
-        moisture: 40
-      },
-      {
-        id: 2,
-        last_on: new Date().getTime(),
-        moisture: 20
-      },
-      {
-        id: 3,
-        last_on: new Date().getTime(),
-        moisture: 30
-      }
-    ]
+  function valve_data (data, callback) {
+    var valve = []
+    var query = ''
 
-    data.valve = valve
-    callback(null, data)
+    for (var i = 0; i < config.valve.length; i++) {
+      query += util.format('SELECT * FROM valve WHERE id = %d AND status = 1 ORDER BY time DESC LIMIT 1;', config.valve[i].id)
+    }
+
+    db.query(query, function (err, results) {
+      if (err) {
+        logger.error('AUTO', 'db', err)
+        callback('cant get valve')
+      } else {
+        logger.debug('AUTO', 'db', results[0])
+        results = results[0]
+
+        for (var i = 0; i < results.length; i++) {
+          if (results[i] !== undefined && results[i].hasOwnProperty('time')) {
+            valve.push({
+              id: results[i].id,
+              last_on: moment(results[i].time).format('x')
+            })
+          }
+        }
+
+        data.valve = valve
+        callback(null, data)
+      }
+    })
+  },
+  function probe_data (data, callback) {
+    var probe = []
+    var query = ''
+
+    for (var i = 0; i < config.probe.length; i++) {
+      query += util.format('SELECT * FROM probe WHERE id = %d ORDER BY time DESC LIMIT 1;', config.probe[i].id)
+    }
+
+    db.query(query, function (err, results) {
+      if (err) {
+        logger.error('AUTO', 'db', err)
+        callback('cant get probes')
+      } else {
+        logger.debug('AUTO', 'db', results[0])
+        results = results[0]
+
+        for (var i = 0; i < results.length; i++) {
+          if (results[i] !== undefined && results[i].hasOwnProperty('time')) {
+            probe.push({
+              id: results[i].id,
+              last_on: moment(results[i].time).format('x')
+            })
+          }
+        }
+
+        data.probe = probe
+        callback(null, data)
+      }
+    })
   }
 ],
   function (err, results) {

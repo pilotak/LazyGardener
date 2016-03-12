@@ -13,7 +13,7 @@ valve_control(false, false)
 // Configure express
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')
-app.use(favicon(path.join(__dirname, 'public/img/favicon.png')))
+app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon.png')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
@@ -24,10 +24,6 @@ require('./routes/default')(app)
 
 if (config.meteo_station.enabled === true) {
   require('./app/meteo')
-}
-
-if (config.push_messages.email.enabled === true || config.push_messages.gcm.enabled === true) {
-  require('./app/push_messages')
 }
 
 if (config.fan.enabled === true) {

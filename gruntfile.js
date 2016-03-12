@@ -1,52 +1,53 @@
-module.exports = function(grunt) {
-grunt.initConfig({
-  less: {
-    bootstrap: {
-      options: {
-        compress: false
+var lng = require('./config/config.js').general.lng
+
+module.exports = function (grunt) {
+  grunt.initConfig({
+    less: {
+      bootstrap: {
+        options: {
+          compress: false
+        },
+        files: {
+          './public/css/bootstrap.css': ['./less/bootstrap.less']
+        }
       },
-      files: {
-        "./public/css/bootstrap.css": ["./less/bootstrap.less"]
+      main: {
+        options: {
+          compress: false
+        },
+        files: {
+          './public/css/main.css': ['./less/main.less']
+        }
       }
     },
-    main: {
-      options: {
-        compress: false
-      },
-      files: {
-        "./public/css/main.css": ["./less/main.less"]
-      }
-    }
-  },
-  concat: {
+    concat: {
       main: {
-        src: ["./bower_components/raphael/raphael-min.js",
-              "./bower_components/morrisjs/morris.js",
-              "./bower_components/timeago/jquery.timeago.js",
-              "./bower_components/timeago/locales/jquery.timeago.cs.js",
-              "./node_modules/date-format-lite/dist/index-min.js",
-              "./public/js/main.js"
-            ],
-        dest: "./public/js/scripts.js",
+        src: ['./bower_components/raphael/raphael-min.js',
+          './bower_components/morrisjs/morris.js',
+          './bower_components/timeago/jquery.timeago.js',
+          './bower_components/timeago/locales/jquery.timeago.' + lng + '.js',
+          './public/js/main.js'
+        ],
+        dest: './public/js/scripts.js',
         nonull: true
       }
     },
     uglify: {
       main: {
-          options: {
-            preserveComments: false
-          },
-          files: {
-              './public/js/scripts.min.js': ["./public/js/scripts.js"]
-          }
+        options: {
+          preserveComments: false
+        },
+        files: {
+          './public/js/scripts.min.js': ['./public/js/scripts.js']
+        }
       },
       jquery: {
-          options: {
-            preserveComments: false
-          },
-          files: {
-              './public/js/jquery.min.js': ['./bower_components/jquery/dist/jquery.js']
-          }
+        options: {
+          preserveComments: false
+        },
+        files: {
+          './public/js/jquery.min.js': ['./bower_components/jquery/dist/jquery.js']
+        }
       }
     },
     combine_mq: {
@@ -61,8 +62,8 @@ grunt.initConfig({
           map: false,
           browsers: ['last 3 versions', 'ie 11']
         },
-        src: ['./public/css/bootstrap.css','./public/css/main.css']
-      },
+        src: ['./public/css/bootstrap.css', './public/css/main.css']
+      }
     },
     cssmin: {
       main: {
@@ -70,39 +71,39 @@ grunt.initConfig({
           keepSpecialComments: 0
         },
         files: {
-          './public/css/style.min.css':["./bower_components/morrisjs/morris.css",
-                                        './public/css/bootstrap.css',
-                                        "./public/css/main.css"
-                                       ]
+          './public/css/style.min.css': ['./bower_components/morrisjs/morris.css',
+            './public/css/bootstrap.css',
+            './public/css/main.css'
+          ]
         }
-      },
+      }
     }
-});
+  })
 
-grunt.loadNpmTasks('grunt-contrib-less');
-grunt.loadNpmTasks('grunt-contrib-concat');
-grunt.loadNpmTasks('grunt-contrib-uglify');
-grunt.loadNpmTasks('grunt-combine-mq');
-grunt.loadNpmTasks('grunt-autoprefixer');
-grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-less')
+  grunt.loadNpmTasks('grunt-contrib-concat')
+  grunt.loadNpmTasks('grunt-contrib-uglify')
+  grunt.loadNpmTasks('grunt-combine-mq')
+  grunt.loadNpmTasks('grunt-autoprefixer')
+  grunt.loadNpmTasks('grunt-contrib-cssmin')
 
-grunt.registerTask('default', [
-  'less',
-  'autoprefixer',
-  'combine_mq',
-  'cssmin',
-  'concat',
-  'uglify:main',
-]);
+  grunt.registerTask('default', [
+    'less',
+    'autoprefixer',
+    'combine_mq',
+    'cssmin',
+    'concat',
+    'uglify:main'
+  ])
 
-grunt.registerTask('js', [
-  'concat',
-  'uglify:main',
-]);
+  grunt.registerTask('js', [
+    'concat',
+    'uglify:main'
+  ])
 
-grunt.registerTask('css', [
-  'less:main',
-  'autoprefixer',
-  'cssmin'
-]);
-};
+  grunt.registerTask('css', [
+    'less:main',
+    'autoprefixer',
+    'cssmin'
+  ])
+}

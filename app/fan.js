@@ -14,15 +14,17 @@ new Cron(config.fan.interval, function () {
           callback(null, id)
         } else {
           logger.error('FAN', '1-Wire error')
+          callback('1-Wire error')
         }
       })
     },
     function get_temp (id, callback) {
       ds18b20.temperature(id, function (err, temp) {
-        if (!err) {
+        if (!err && temp < 85 && temp > -125) {
           callback(null, temp)
         } else {
           logger.error('FAN', "Can't read board temperature")
+          callback("Can't read board temperature")
         }
       })
     },
@@ -35,6 +37,7 @@ new Cron(config.fan.interval, function () {
           callback(null, temp, fan_status)
         } else {
           logger.error('FAN', 'Switch error')
+          callback('Fan switch error')
         }
       })
     }

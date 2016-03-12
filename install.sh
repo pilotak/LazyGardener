@@ -5,6 +5,7 @@ apt-get install python-dev
 apt-get install python-smbus
 apt-get install i2c-tools
 apt-get install git
+apt-get install mosquitto
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
@@ -47,68 +48,27 @@ echo
 echo
 
 echo -e "\e[30;48;5;208mInstall node.js...\e[0m"
-wget https://nodejs.org/dist/v5.3.0/node-v5.3.0-linux-armv6l.tar.xz
-tar -xvf node-v5.3.0-linux-armv6l.tar.xz
-cd node-v5.3.0-linux-armv6l
+wget https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-armv6l.tar.xz
+tar -xvf node-v5.5.0-linux-armv6l.tar.xz
+cd node-v5.5.0-linux-armv6l
 cp -R * /usr/local/
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
 
-
 echo -e "\e[30;48;5;208mInstall node.js global packages...\e[0m"
 npm install -g node-gyp
-npm install -g forever
+npm install -g pm2
 npm install -g bower
 npm install -g grunt-cli
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
 
-
-
 echo -e "\e[30;48;5;208mCreate daemon file..\e[0m"
-
-cat <<EOF >/etc/init.d/LazyGardener
-#!/bin/sh
-
-### BEGIN INIT INFO
-# Provides:          LazyGardener     
-# Required-Start:
-# Required-Stop:
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: LazyGardener init file
-# Description:       LazyGardener init file
-### END INIT INFO
-
-
-export PATH=$PATH:/usr/local/bin
-export NODE_PATH=/usr/local/lib/node_modules
-modprobe wire
-modprobe w1-gpio
-modprobe w1-therm
-
-case "\$1" in
-  start)
-  exec forever -w -a -l "/home/$(logname)/LazyGardener/logs/node.log" --uid "LazyGardener" --sourceDir="/home/$(logname)/LazyGardener" start app.js
-  ;;
-
-  stop)
-  exec forever stop "LazyGardener"
-  ;;
-
-  restart)
-  exec forever restart "LazyGardener"
-  ;;
-esac
-
-exit 0
-EOF
-
-chmod a+x /etc/init.d/LazyGardener
-update-rc.d LazyGardener defaults
-
+pm2 completion install
+pm2 startup systemd -u pi
+systemctl enable mosquitto
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
@@ -175,8 +135,8 @@ echo
 echo -e "\e[30;48;5;208mCleaning up...\e[0m"
 rm /home/$(logname)/install.sh
 rm -rf /home/$(logname)/LazyGardener/temp
-rm /home/$(logname)/node-v5.3.0-linux-armv6l.tar.xz
-rm -rf /home/$(logname)/node-v5.3.0-linux-armv6l
+rm /home/$(logname)/node-v5.5.0-linux-armv6l.tar.xz
+rm -rf /home/$(logname)/node-v5.5.0-linux-armv6l
 rm /home/$(logname)/influxdb_0.9.6_armhf.deb
 rm /home/$(logname)/grafana_2.6.0_armhf.deb
 echo -e "\e[30;48;5;208mDone\e[0m"

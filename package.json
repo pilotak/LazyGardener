@@ -1,9 +1,8 @@
 {
   "name": "LazyGardener",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
-  "author": "Pavel Slama",
-  "main": "app.js",
+  "author": "Pavel Slama", 
   "dependencies": {
     "async": "^1.5.2",
     "basic-auth": "^1.0.3",
@@ -21,6 +20,7 @@
     "influx": "^4.1.0",
     "json-http": "^1.0.2",
     "moment": "^2.11.0",
+    "mqtt": "^1.7.0",
     "nodemailer": "^1.10.0",
     "onoff": "^1.0.3",
     "require-dir": "^0.3.0",

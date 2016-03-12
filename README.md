@@ -1,11 +1,14 @@
 LazyGardener
 ==========
-Node.js app running on Raspberry Pi A+ controlling sprinkler valves (manually at the moment) in the garden and real-time charts.
+Node.js app running on Raspberry Pi A+ _(Jessie)_ controlling sprinkler valves (manually at the moment) in the garden.
 
-* All soil moisture data are harvested [over WiFi soil probes](../../../LazyGardener-probes)
-* [Meteo station over "extended" I2C](../../../LazyGardener-meteo)
-* Integrated fan for cooling down in-box temperature uses DS18B20
-* Contains two battery chargers (for soil probes) and two power supplies: ~24V for valves & =5V for chargers and Raspberry Pi
+* All soil moisture data are harvested [over WiFi soil moisture probes](../../../LazyGardener-probes)
+* [Meteo station over "extended-length" I2C](../../../LazyGardener-meteo)
+* Integrated fan for cooling down in-box
+* Contains two battery chargers (for soil moisture probes)
+* Integrated relay for power supply ~24V to valves or it can be used to switch pump on
+* or if you have a pump away from the box it can be done through Wi-Fi
+* Integrated time server for probe time synchronization
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
@@ -17,12 +20,15 @@ chmod 777 ./install.sh
 #You would need to confirm a few prompts to confirm installation of packages
 sudo ./install.sh 
 ```
-Now go to your Raspberry Pi ip address to port :8083 through web browser and create user and DB (you can create any name or password you like, but you have to update ./config/config.js)
+Now go to your Raspberry Pi IP address to port :8083 through web browser and create user and DB
 ```SQL
 CREATE USER "root" WITH PASSWORD 'root' WITH ALL PRIVILEGES
+CREATE USER "api" WITH PASSWORD 'password'
 CREATE DATABASE "LazyGardener"
 ```
-and than through SSH
+_(of course you can create any name or password you like, but you have to update ./config/config.js)
+
+after you do some updates in ./config/config.js, finally start
 ```Shell
-sudo service LazyGardener start
+cd /home/$(logname)/LazyGardener && pm2 start startup.json
 ```

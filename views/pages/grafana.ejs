@@ -1,0 +1,8 @@
+<% include ../partials/head %>
+<script>
+	jQuery(document).ready(function ($) {
+		$("iframe").attr("src", "http://" + window.location.hostname + ":3000/dashboard/db/lazygardener");
+	})
+</script>
+<iframe frameborder="0" style="width: 100%; height:100vh; margin-bottom: -10px;"></iframe>
+<% include ../partials/footer %>

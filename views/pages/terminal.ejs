@@ -1,15 +1,17 @@
 <% include ../partials/head %>
-<% include ../partials/header %>
 <div class="container-fluid" role="main">
-	<ul class="messages"></ul>
+	<div class="row">
+		<div class="col-sm-9 col-md-10">
+			<ul class="msg">
+			</ul>
+		</div>
+		<div class="col-sm-3 col-md-2 ctrl">
+			<ul class="type"></ul>
+			<ul class="name"></ul>
+		</div>
+	</div>
 </div>
 <script>
-jQuery(document).ready(function() {
-	var socket = io();
-
-	socket.on('terminal', function(data){
-		$('.messages').append($('<li>').text(data.datetime + ": " + data.data));
-	});
-});
+	terminal();
 </script>
 <% include ../partials/footer %>

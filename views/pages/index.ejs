@@ -1,21 +1,27 @@
 <% include ../partials/head %>
 <% include ../partials/header %>
-<div class="container-fluid" role="main">
-	<div class="loader-container">
+<div class="container-fluid " role="main">
+	<!-- <div class="loader-container">
 		<div class="loader"></div>
-	</div>
-	<button data-id="1" data-status="1">jednička ON</button>
-	<button data-id="1" data-status="0">jednička OFF</button>
+	</div> -->
+	<div class="control"></div>
+
 </div>
 <script>
-	//charts(-<%- hours %>);
-
 jQuery(document).ready(function($) {
 	var socket = io();
 
 	$("body").on("click", "button", function(event) {
 		socket.emit('valve', {valve: $(this).data("id"), status: $(this).data("status")});
 	});
+
+	var object = <%- JSON.stringify(valves); %>;
+	
+
+	for (var i = 0; i < object.length; i++) {
+		
+		$('<div class="buttons"><button data-id="'+object[i].id+'" data-status="1">'+object[i].name +' ON</button><button data-id="'+object[i].id+'" data-status="0">'+object[i].name +' OFF</button></div>').appendTo('.control')
+	}
 });
 </script>
 <% include ../partials/footer %>

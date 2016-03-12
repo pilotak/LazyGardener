@@ -1,12 +1,25 @@
 module.exports = {
-  db: {
-    host: 'localhost',
-    user: 'root',
-    pass: 'root',
-    name: 'LazyGardener',
-    port: 8086
+  api: {
+    db: {
+      user: 'api',
+      pass: 'password'
+    },
+    time_port: 9615
   },
-  push_messages: {
+  auto_control: {
+    enabled: false,
+    interval: '*/1 * * * *', // in CRON like format
+    weather: {
+      enabled: false,
+      lat: 0,
+      lng: 0,
+      units: 'metric',
+      api: ''
+    },
+    hours: {
+      on: 6,
+      off: 20
+    },
     email: {
       enabled: false,
       settings: { // nodemailer settings
@@ -16,10 +29,19 @@ module.exports = {
           pass: '***'
         }
       }
-    },
-    gcm: {
-      enabled: false
-    },
+    }
+  },
+  db: {
+    host: 'localhost',
+    user: 'root',
+    pass: 'root',
+    name: 'LazyGardener',
+    port: 8086
+  },
+  fan: {
+    enabled: true,
+    pin: 26,
+    too_hot: 35, // in °C
     interval: '*/1 * * * *' // in CRON like format
   },
   frontend: {
@@ -27,13 +49,36 @@ module.exports = {
     pass: '***',
     port: 4000
   },
-  api: {
-    port: 8000,
-    db: 'raw'
+  general: {
+    show_debug: false, // in SSH terminal and log file, will be passed to online terminal
+    lng: 'cs' // for plugin localization
   },
   i2c: {
     dev: '/dev/i2c-1',
     this: 0x18
+  },
+  meteo_station: {
+    enabled: false,
+    interval: '*/30 * * * * *', // in CRON like format
+    BMP085_addr: 0x77,
+    HTU21D_addr: 0x40,
+    BH1750_addr: 0x23,
+    hub_addr: 0x04
+  },
+  probe: [
+    {
+      id: 1,
+      location: 1,
+      calibration: [[
+        500, 1180 // in
+      ], [
+        0, 100 // out
+      ]]
+    }
+  ],
+  pump: {
+    enabled: false,
+    address: 'http://xxx.xxx.xxx.xxx'
   },
   valve: [
     {
@@ -65,44 +110,5 @@ module.exports = {
     enabled: true,
     pin: 20,
     delay: 1000 // how long to wait to switch on valves
-  },
-  meteo_station: {
-    enabled: false,
-    interval: '*/30 * * * * *', // in CRON like format
-    BMP085_addr: 0x77,
-    HTU21D_addr: 0x40,
-    BH1750_addr: 0x23,
-    hub_addr: 0x04
-  },
-  pump: {
-    enabled: false,
-    address: 'http://xxx.xxx.xxx.xxx'
-  },
-  auto_control: {
-    enabled: true,
-    interval: '*/10 * * * *', // in CRON like format
-    weather: {
-      enabled: true,
-      lat: 49.137243,
-      lng: 14.1084932,
-      units: 'metric',
-      api: ''
-    },
-    hours: {
-      on: 6,
-      off: 20
-    }
-  },
-  fan: {
-    enabled: true,
-    pin: 26,
-    too_hot: 28, // in °C
-    interval: '*/10 * * * *' // in CRON like format
-  },
-  probe: [
-    {
-      id: 1,
-      location: 1
-    }
-  ]
+  }
 }

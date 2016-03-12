@@ -323,3 +323,173 @@ div[role=main] {
 		transform: rotate(360deg);
 	}
 }
+
+body[data-page=terminal]{
+	background-color: #272822;
+	color: white;
+
+	.container-fluid {
+		padding-bottom: 0;
+
+		.row > div {
+			margin-bottom: 0;
+		}
+	}
+	@foot-width: 50px;
+
+	.msg{
+		padding-top: 25px;
+		padding-left: 0;
+		margin-bottom: @foot-width + 10;
+
+		@media (min-width: @screen-sm) {
+			overflow: hidden;
+			height: 100vh;
+			margin-bottom: 0;
+			padding-left: 40px;
+
+			&:hover {
+				overflow-y: auto;
+			}
+		}
+
+		li {
+			text-align: left;
+			font-family: monospace;
+			list-style: none;
+
+			&:last-child {
+				margin-bottom: 25px;
+			}
+		
+			span {
+				color: #272822;
+				padding: 0 3px;
+			}
+		
+			&.info {
+				color: @dark-green;
+	
+				span {
+					background-color: @dark-green;
+				}
+			}
+			&.debug {
+				color: @light-brown;
+	
+				span {
+					background-color: @light-brown;
+				}
+			}
+			&.warning {
+				color: @light-orange;
+	
+				span {
+					background-color: @light-orange;
+				}
+			}
+			&.error{
+				color: @dark-orange;
+	
+				span {
+					background-color: @dark-orange;
+				}
+			}
+		
+			time {
+				color: darken(gray, 11%);
+				font-style: italic;
+				font-size: 0.8em;
+				padding-left: 15px;
+			}
+		}
+	}
+
+	.ctrl {
+		height: @foot-width;
+		background-color: lighten(black, 2%);
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		overflow: hidden;
+
+		&:hover {
+			overflow-x: auto;
+		}
+
+		@media (max-width: @screen-sm) {
+			width: 100%;
+		}
+
+		@media (min-width: @screen-sm) {
+			height: 100vh;
+			width: auto;
+			background-color: transparent;
+			position: relative;
+
+			&:hover {
+				overflow-x: hidden;
+				overflow: auto;
+			}
+		}
+
+		ul {
+			padding: 0;
+			margin-top: 15px;
+			display: table;
+			float: left;
+
+			@media (min-width: @screen-sm) {
+				display: block;
+				float: none;
+			}
+
+			li {
+				list-style: none;
+				text-align: left;
+				padding: 0 5px;
+				display: table-cell;
+
+				@media (min-width: @screen-sm) {
+					margin: 2px 0;
+					width: 100%;
+					display: list-item;
+					padding: 0;
+				}
+
+				a {
+					color: #272822;
+					padding: 0 3px;
+					text-transform: uppercase;
+
+					&.info{
+						background-color: @dark-green;
+					}
+					&.debug{
+						background-color: @light-brown;
+					}
+					&.warning{
+						background-color: @light-orange;
+					}
+					&.error{
+						background-color: @dark-orange;
+					}
+
+					&.inactive{
+						opacity: 0.5;
+					}
+
+					&:hover, &:active, &:focus {
+						text-decoration: none;
+					}
+				}
+			}
+
+			&.name {
+				li a {
+					background-color: gray;
+				}
+			}
+		}
+	}	
+}

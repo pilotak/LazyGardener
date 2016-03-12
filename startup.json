@@ -1,0 +1,20 @@
+{
+  "apps" : [
+    {
+      "name"      : "LazyGardener",
+      "script"    : "app.js",
+      "watch"     : true,
+      "ignore_watch" : ["logs", "less", "views", "public", "node_modules", "bower_components", "app/api\\.js"],
+      "error_file" : "./logs/main-err.log",
+      "out_file"   : "./logs/main.log"
+    },
+    {
+      "name"       : "LazyGardener-api",
+      "script"     : "api.js",
+      "cwd"        : "./app",
+      "instances"  : 2,
+      "exec_mode"  : "cluster_mode",
+      "error_file" : "./logs/api-err.log",
+    }
+  ]
+}
