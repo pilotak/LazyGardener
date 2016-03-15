@@ -10,8 +10,7 @@
     },
     {
       "name"       : "LazyGardener-api",
-      "script"     : "api.js",
-      "cwd"        : "./app",
+      "script"     : "./app/api.js",
       "instances"  : 2,
       "exec_mode"  : "cluster_mode",
       "error_file" : "./logs/api-err.log",

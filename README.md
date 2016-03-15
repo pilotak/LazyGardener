@@ -10,6 +10,8 @@ Node.js app running on Raspberry Pi A+ _(Jessie)_ controlling sprinkler valves (
 * or if you have a pump away from the box it can be done through Wi-Fi
 * Integrated time server for probe time synchronization
 
+I believe it will run on B+/Zero with no problems but have not tried
+
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 #Install
@@ -26,7 +28,7 @@ CREATE USER "root" WITH PASSWORD 'root' WITH ALL PRIVILEGES
 CREATE USER "api" WITH PASSWORD 'password'
 CREATE DATABASE "LazyGardener"
 ```
-_(of course you can create any name or password you like, but you have to update ./config/config.js)
+_(of course you can create any name or password you like, but you have to update ./config/config.js)_
 
 after you do some updates in ./config/config.js, finally start
 ```Shell

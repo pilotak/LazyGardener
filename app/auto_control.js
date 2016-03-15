@@ -5,64 +5,7 @@ var util = require('util')
 var logger = require('../lib/logger')
 var config = require('../config/config')
 var db = require('../config/db')
-var mqtt = require('mqtt')
-var email = require('nodemailer').createTransport(config.auto_control.email.settings)
-
-if (config.auto_control.email.enabled) {
-  var mailOptions = {
-    from: config.auto_control.email.settings.auth.user,
-    to: config.auto_control.email.settings.auth.user,
-    subject: '',
-    text: '',
-    html: ''
-  }
-}
-
-var client = mqtt.connect('mqtt://localhost')
-
-client.on('connect', function () {
-  client.subscribe({'/feeds/probe': 1})
-})
-
-client.on('message', function (topic, message, packet) {
-  message = message.toString()
-
-  try {
-    message = JSON.parse(message)
-
-    var presented = false
-
-    for (var ii = 0; ii < config.probe.length; ii++) {
-      if (config.probe[ii].id === message.id) {
-        presented = true
-      }
-    }
-
-    if (presented) {
-      for (var i = 0; i < message.d.length; i++) {
-        if (message.hasOwnProperty('v')) {
-          var voltage = parseFloat(parseInt(message.v, 10) / 10)
-
-          if (config.auto_control.email.enabled) {
-            mailOptions.html = util.format("Baterie sensoru '%d' jsou téměř vybité: %d V", message.id, voltage)
-
-            email.sendMail(mailOptions, function (error, info) {
-              if (!error) {
-                logger.info('AUTO', 'Email send: ' + info.response)
-              } else {
-                logger.error('AUTO', 'Error when sending email: ' + error)
-              }
-            })
-          }
-        }
-      }
-    } else {
-      logger.warn('AUTO', 'unknown probe', message.id)
-    }
-  } catch (e) {
-    logger.error('AUTO', 'Error when parsing incoming probe data', message, e)
-  }
-})
+var mqtt = require('mqtt').connect('mqtt://localhost')
 
 async.waterfall([
   function get_weather (callback) {
@@ -184,3 +127,58 @@ async.waterfall([
       logger.error('AUTO', 'error')
     }
   })
+
+if (config.auto_control.email.enabled) {
+  var email = require('nodemailer').createTransport(config.auto_control.email.settings)
+  var mailOptions = {
+    from: config.auto_control.email.settings.auth.user,
+    to: config.auto_control.email.settings.auth.user,
+    subject: '',
+    text: '',
+    html: ''
+  }
+}
+
+mqtt.on('connect', function () {
+  mqtt.subscribe({'/feeds/probe': 1})
+})
+
+mqtt.on('message', function (topic, message, packet) {
+  message = message.toString()
+
+  try {
+    message = JSON.parse(message)
+
+    var presented = false
+
+    for (var ii = 0; ii < config.probe.length; ii++) {
+      if (config.probe[ii].id === message.id) {
+        presented = true
+      }
+    }
+
+    if (presented) {
+      for (var i = 0; i < message.d.length; i++) {
+        if (message.hasOwnProperty('v')) {
+          var voltage = parseFloat(parseInt(message.v, 10) / 10)
+
+          if (config.auto_control.email.enabled) {
+            mailOptions.html = util.format("Baterie sensoru '%d' jsou téměř vybité: %d V", message.id, voltage)
+
+            email.sendMail(mailOptions, function (error, info) {
+              if (!error) {
+                logger.info('AUTO', 'Email send: ' + info.response)
+              } else {
+                logger.error('AUTO', 'Error when sending email: ' + error)
+              }
+            })
+          }
+        }
+      }
+    } else {
+      logger.warn('AUTO', 'unknown probe', message.id)
+    }
+  } catch (e) {
+    logger.error('AUTO', 'Error when parsing incoming probe data', message, e)
+  }
+})
