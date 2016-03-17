@@ -32,6 +32,9 @@ cat <<EOF >/etc/modprobe.d/raspi-blacklist.conf
 #blacklist spi-bcm2708
 #blacklist i2c-bcm2708
 EOF
+modprobe i2c-bcm2708
+modprobe i2c-dev
+chmod o+rw /dev/i2c*
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo
@@ -48,9 +51,9 @@ echo
 echo
 
 echo -e "\e[30;48;5;208mInstall node.js...\e[0m"
-wget https://nodejs.org/dist/v5.5.0/node-v5.5.0-linux-armv6l.tar.xz
-tar -xvf node-v5.5.0-linux-armv6l.tar.xz
-cd node-v5.5.0-linux-armv6l
+wget https://nodejs.org/dist/v5.8.0/node-v5.8.0-linux-armv6l.tar.xz
+tar -xvf node-v5.8.0-linux-armv6l.tar.xz
+cd node-v5.8.0-linux-armv6l
 cp -R * /usr/local/
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
@@ -67,7 +70,7 @@ echo
 
 echo -e "\e[30;48;5;208mCreate daemon file..\e[0m"
 pm2 completion install
-pm2 startup systemd -u pi
+pm2 startup systemd -u $(logname)
 systemctl enable mosquitto
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
@@ -135,8 +138,8 @@ echo
 echo -e "\e[30;48;5;208mCleaning up...\e[0m"
 rm /home/$(logname)/install.sh
 rm -rf /home/$(logname)/LazyGardener/temp
-rm /home/$(logname)/node-v5.5.0-linux-armv6l.tar.xz
-rm -rf /home/$(logname)/node-v5.5.0-linux-armv6l
+rm /home/$(logname)/node-v5.8.0-linux-armv6l.tar.xz
+rm -rf /home/$(logname)/node-v5.8.0-linux-armv6l
 rm /home/$(logname)/influxdb_0.9.6_armhf.deb
 rm /home/$(logname)/grafana_2.6.0_armhf.deb
 echo -e "\e[30;48;5;208mDone\e[0m"

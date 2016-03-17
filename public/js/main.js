@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {})
 
 function charts (hours) {
-  jQuery(document).ready(function () {
+  jQuery(document).ready(function ($) {
     var chart = [
       {
         element: 'chart1',
