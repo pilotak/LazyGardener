@@ -11,7 +11,7 @@ new Cron(config.fan.interval, function () {
     function get_dallas_id (callback) {
       ds18b20.sensors(function (err, id) {
         if (!err) {
-          callback(null, id)
+          callback(null, id[0])
         } else {
           logger.error('FAN', '1-Wire error')
           callback('1-Wire error')

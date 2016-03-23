@@ -22,7 +22,7 @@ chmod 777 ./install.sh
 #You would need to confirm a few prompts to confirm installation of packages
 sudo ./install.sh 
 ```
-Now go to your Raspberry Pi IP address to port :8083 through web browser and create user and DB
+Now go to your Raspberry Pi IP address to port :8083 through your web browser and create user and DB
 ```SQL
 CREATE USER "root" WITH PASSWORD 'root' WITH ALL PRIVILEGES
 CREATE USER "api" WITH PASSWORD 'password'
