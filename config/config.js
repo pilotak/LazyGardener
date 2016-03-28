@@ -7,8 +7,8 @@ module.exports = {
     time_port: 9615
   },
   auto_control: {
-    enabled: false,
-    interval: '*/1 * * * *', // in CRON like format
+    enabled: true,
+    interval: '*/30 * * * *', // in CRON like format
     weather: {
       enabled: false,
       lat: 0,
@@ -18,18 +18,9 @@ module.exports = {
     },
     hours: {
       on: 6,
-      off: 20
+      off: 23
     },
-    email: {
-      enabled: false,
-      settings: { // nodemailer settings
-        service: 'Gmail',
-        auth: {
-          user: '***',
-          pass: '***'
-        }
-      }
-    }
+    email: false
   },
   db: {
     host: 'localhost',
@@ -38,11 +29,18 @@ module.exports = {
     name: 'LazyGardener',
     port: 8086
   },
+  email: { // nodemailer settings
+    service: 'Gmail',
+    auth: {
+      user: '***',
+      pass: '***'
+    }
+  },
   fan: {
     enabled: true,
     pin: 26,
     too_hot: 35, // in °C
-    interval: '*/1 * * * *' // in CRON like format
+    interval: '*/10 * * * *' // in CRON like format
   },
   frontend: {
     user: '***',
@@ -50,7 +48,7 @@ module.exports = {
     port: 4000
   },
   general: {
-    show_debug: false, // in SSH terminal and log file, will be passed to online terminal
+    show_debug: false, // in SSH terminal and log file, will be passed to online terminal anyway
     lng: 'cs' // for plugin localization
   },
   i2c: {
@@ -110,5 +108,10 @@ module.exports = {
     enabled: true,
     pin: 20,
     delay: 1000 // how long to wait to switch on valves
+  },
+  watch_batteries: {
+    enabled: true, // will watch and send email
+    min: 3.1,
+    subject: 'Stav baterií je nízký'
   }
 }
