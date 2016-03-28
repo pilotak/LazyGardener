@@ -173,10 +173,21 @@ div[role=main] {
 
 	.control {
 		margin: 0;
+		position: relative;
+		top: 20px;
+
+		@media (min-width: @screen-xs) {
+			margin-top: -120px;
+			top: 50vh;
+		}
 
 		.buttons {
 			width: auto;
-			text-align: left;
+			text-align: center;
+
+			@media (max-width: @screen-xs) {
+				margin-bottom: 30px;
+			}
 
 			button {
 				border-radius: @border-radius-base;
@@ -187,6 +198,16 @@ div[role=main] {
 				padding: 6px 24px;
 				font-size: 15px;
 				margin-right: 6px;
+				width: 100%;
+				margin-bottom: 6px;
+				display: block;
+				height: 45px;
+
+				@media (min-width: @screen-xs) {
+					width: auto;
+					display: inline-block;
+					height: auto;
+				}
 
 				&[data-status="1"] {
 					background-color: @dark-green;

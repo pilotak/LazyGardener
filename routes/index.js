@@ -4,11 +4,15 @@ var config = require('../config/config')
 
 module.exports = function (router) {
   router.route('/').get(function (req, res, next) {
-    res.render('pages/index', {
-      page: 'watering',
-      title: 'Zavlažování',
-      valves: config.valve
-    })
+    if (req.authenticated) {
+      res.render('pages/index', {
+        page: 'watering',
+        title: 'Zavlažování',
+        valves: config.valve
+      })
+    } else {
+      res.status(401).send()
+    }
   })
 
   io.on('connection', function (socket) {

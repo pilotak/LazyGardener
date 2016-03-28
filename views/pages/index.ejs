@@ -1,11 +1,7 @@
 <% include ../partials/head %>
 <% include ../partials/header %>
 <div class="container-fluid " role="main">
-	<!-- <div class="loader-container">
-		<div class="loader"></div>
-	</div> -->
 	<div class="control"></div>
-
 </div>
 <script>
 jQuery(document).ready(function($) {
@@ -19,8 +15,9 @@ jQuery(document).ready(function($) {
 	
 
 	for (var i = 0; i < object.length; i++) {
-		
+		if(object[i].name.length > 0){
 		$('<div class="buttons"><button data-id="'+object[i].id+'" data-status="1">'+object[i].name +' ON</button><button data-id="'+object[i].id+'" data-status="0">'+object[i].name +' OFF</button></div>').appendTo('.control')
+		}
 	}
 });
 </script>

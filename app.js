@@ -6,9 +6,18 @@ var config = require('./config/config')
 var express = server.express
 var app = server.app
 var valve_control = require('./lib/valve_control')
+var basic = require('express-authentication-basic')
 
 // switch all valves off on start
 valve_control(false, false)
+
+var login = basic(function (challenge, callback) {
+  if (challenge.username === config.frontend.user && challenge.password === config.frontend.password) {
+    callback(null, true)
+  } else {
+    callback(null, false)
+  }
+})
 
 // Configure express
 app.set('views', path.join(__dirname, 'views'))
@@ -18,6 +27,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'bower_components')))
+app.use(login)
 
 // add routes
 require('./routes/default')(app)

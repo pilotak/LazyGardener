@@ -79,6 +79,7 @@ dpkg -i grafana_2.6.0_armhf.deb
 /bin/systemctl start grafana-server
 systemctl enable grafana-server.service 
 systemctl start grafana-server.service
+curl 'http://admin:admin@127.0.0.1:3000/api/datasources' -X POST -H 'Content-Type: application/json;charset=UTF-8' --data-binary '{"name":"LazyGardener","type":"influxdb","url":"http://localhost:8086","access":"proxy","isDefault":true,"database":"LazyGardener","user":"root","password":"root"}'
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo

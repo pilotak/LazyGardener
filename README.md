@@ -33,5 +33,5 @@ _(of course you can create any name or password you like, but you have to update
 after you do some updates in ./config/config.js, restart and finally start
 ```Shell
 sudo reboot
-cd /home/$(logname)/LazyGardener && pm2 start startup.json
+cd /home/$(logname)/LazyGardener && pm2 start ./config/startup.json
 ```
