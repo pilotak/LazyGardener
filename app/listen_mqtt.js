@@ -23,9 +23,9 @@ mqtt.on('message', function (topic, message, packet) {
     }
 
     if (presented) {
-      for (var i = 0; i < message.d.length; i++) {
-        logger.info('PROBE', message)
+      logger.debug('PROBE', message)
 
+      for (var i = 0; i < message.d.length; i++) {
         if (config.watch_batteries.enabled) {
           if (message.hasOwnProperty('v')) {
             if (parseFloat(parseInt(message.v, 10) / 10) <= config.watch_batteries.min) {

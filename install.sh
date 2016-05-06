@@ -57,7 +57,7 @@ echo
 
 echo -e "\e[30;48;5;208mCreate daemon file..\e[0m"
 pm2 completion install
-pm2 startup systemd -u $(logname)
+env PATH=$PATH:/usr/local/bin pm2 startup raspberry -u $(logname)
 systemctl enable mosquitto
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo

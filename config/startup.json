@@ -4,7 +4,7 @@
       "name"      : "LazyGardener",
       "script"    : "app.js",
       "watch"     : true,
-      "ignore_watch" : ["logs", "less", "views", "public", "node_modules", "bower_components", "app/api\\.js", "*\\.ejs"],
+      "ignore_watch" : ["logs", "less", "views", "public", "node_modules", "bower_components", "app/api\\.js", "*\\.ejs", "test.js"],
       "error_file" : "./logs/main-err.log",
       "out_file"   : "./logs/main.log"
     },

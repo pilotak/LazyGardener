@@ -12,7 +12,7 @@ var basic = require('express-authentication-basic')
 valve_control(false, false)
 
 var login = basic(function (challenge, callback) {
-  if (challenge.username === config.frontend.user && challenge.password === config.frontend.password) {
+  if (challenge.username === config.frontend.user && challenge.password === config.frontend.pass) {
     callback(null, true)
   } else {
     callback(null, false)
@@ -31,6 +31,7 @@ app.use(login)
 
 // add routes
 require('./routes/default')(app)
+require('./app/listen_mqtt')
 
 if (config.meteo_station.enabled === true) {
   require('./app/meteo')

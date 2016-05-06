@@ -72,6 +72,15 @@ module.exports = {
       ], [
         0, 100 // out
       ]]
+    },
+    {
+      id: 2,
+      location: 1,
+      calibration: [[
+        1050, 900 // in
+      ], [
+        0, 100 // out
+      ]]
     }
   ],
   pump: {
@@ -82,25 +91,25 @@ module.exports = {
     {
       pin: 5,
       id: 1,
-      timeout: 1000 * 20, // 1000*60*7
+      timeout: 1000 * 60 * 7, // 1000*60*7
       name: 'Zelenina'
     },
     {
       pin: 6,
       id: 2,
-      timeout: 1000 * 12, // 1000*60*10
+      timeout: 1000 * 60 * 6, // 1000*60*10
       name: 'Ovoce'
     },
     {
       pin: 13,
       id: 3,
-      timeout: 1000 * 15, // 1000*60*15
+      timeout: 1000 * 60 * 8, // 1000*60*15
       name: 'Kytičky'
     },
     {
       pin: 19,
       id: 4,
-      timeout: 1000 * 12, // 1000*60*15
+      timeout: 1000 * 60 * 1, // 1000*60*15
       name: ''
     }
   ],

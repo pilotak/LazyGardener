@@ -43,15 +43,14 @@ client.on('message', function (topic, message, packet) {
       if (presented) {
         for (var i = 0; i < message.d.length; i++) {
           var to_save = {}
-          to_save.raw = parseInt(message.d[i][0], 10)
+          to_save.raw = message.d[i][0]
           to_save.value = Math.round((100 - multiMap(to_save.raw, input, output)) * 100) / 100 // round to two decimal places + invert
-          var time = moment.unix(message.d[i][1]).format('x')
-          to_save.time = time
-          to_save.id = parseInt(message.id, 10)
-          to_save.recno = parseInt(message.r - i, 10)
+          to_save.time = moment.unix(message.d[i][1]).format('x')
+          to_save.id = String(message.id)
+          to_save.recno = message.r - i
 
-          if (message.hasOwnProperty('v')) to_save.voltage = parseFloat(parseInt(message.v, 10) / 10)
-          if (message.hasOwnProperty('t')) to_save.temp = parseFloat(parseInt(message.t, 10) / 100)
+          if (message.hasOwnProperty('v')) to_save.voltage = parseFloat(message.v / 10)
+          if (message.hasOwnProperty('t')) to_save.temp = parseFloat(message.t / 100)
 
           console.log(to_save)
 
@@ -62,6 +61,8 @@ client.on('message', function (topic, message, packet) {
               console.log('Error when saving to db', err)
             }
           })
+
+          console.log(moment(to_save.time).format('YYYY-MM-DD HH:mm'))
         }
       } else {
         console.log('unknown probe')
@@ -78,6 +79,7 @@ http.createServer(function (request, response) {
   if (request.url.substring(1) === 'time') {
     response.writeHead(200, {'Content-Type': 'text/plain'})
     response.end(Math.floor((Date.now()) / 1000).toString())
+    console.log('time request')
   } else {
     response.writeHead(404)
     response.end()
