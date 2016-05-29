@@ -25,26 +25,30 @@ mqtt.on('message', function (topic, message, packet) {
     if (presented) {
       logger.debug('PROBE', message)
 
-      for (var i = 0; i < message.d.length; i++) {
-        if (config.watch_batteries.enabled) {
-          if (message.hasOwnProperty('v')) {
-            if (parseFloat(parseInt(message.v, 10) / 10) <= config.watch_batteries.min) {
-              var location = null
+      if (message.hasOwnProperty('status')) {
+        logger.info('PROBE', message.id, 'is ready to be programmed')
+      } else {
+        for (var i = 0; i < message.d.length; i++) {
+          if (config.watch_batteries.enabled) {
+            if (message.hasOwnProperty('v')) {
+              if (parseFloat(parseInt(message.v, 10) / 1000) <= config.watch_batteries.min) {
+                var location = null
 
-              for (var p = 0; p < config.probe.length; p++) {
-                if (config.probe[p].id === message.id) {
-                  location = config.probe[p].location
-                  break
+                for (var p = 0; p < config.probe.length; p++) {
+                  if (config.probe[p].id === message.id) {
+                    location = config.probe[p].location
+                    break
+                  }
                 }
-              }
 
-              for (var v = 0; v < config.valve.length; v++) {
-                if (config.valve[v].id === location) {
-                  email(
-                    config.watch_batteries.subject,
-                    util.format('Baterie sensoru %d (%s) jsou téměř vybyté', message.id, config.valve[v].name)
-                  )
-                  break
+                for (var v = 0; v < config.valve.length; v++) {
+                  if (config.valve[v].id === location) {
+                    email(
+                      config.watch_batteries.subject,
+                      util.format('Baterie sensoru %d (%s) jsou téměř vybyté', message.id, config.valve[v].name)
+                    )
+                    break
+                  }
                 }
               }
             }

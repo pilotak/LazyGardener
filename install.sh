@@ -57,7 +57,7 @@ echo
 
 echo -e "\e[30;48;5;208mCreate daemon file..\e[0m"
 pm2 completion install
-env PATH=$PATH:/usr/local/bin pm2 startup raspberry -u $(logname)
+env PATH=$PATH:/usr/local/bin pm2 startup systemd -u $(logname)
 systemctl enable mosquitto
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
@@ -125,7 +125,7 @@ rm /home/$(logname)/node-v5.8.0-linux-armv6l.tar.xz
 rm -rf /home/$(logname)/node-v5.8.0-linux-armv6l
 rm /home/$(logname)/influxdb_0.9.6_armhf.deb
 rm /home/$(logname)/grafana_2.6.0_armhf.deb
-rm /home/$(logname)/morris.js
+rm /home/$(logname)/LazyGardener/morris.js
 echo -e "\e[30;48;5;208mDone\e[0m"
 echo
 echo

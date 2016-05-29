@@ -49,7 +49,7 @@ client.on('message', function (topic, message, packet) {
           to_save.id = String(message.id)
           to_save.recno = message.r - i
 
-          if (message.hasOwnProperty('v')) to_save.voltage = parseFloat(message.v / 10)
+          if (message.hasOwnProperty('v')) to_save.voltage = parseFloat(message.v / 1000)
           if (message.hasOwnProperty('t')) to_save.temp = parseFloat(message.t / 100)
 
           console.log(to_save)
