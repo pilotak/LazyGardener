@@ -21,8 +21,14 @@ wget https://raw.githubusercontent.com/pilotak/LazyGardener/master/install.sh
 chmod 777 ./install.sh
 #You would need to confirm a few prompts to confirm installation of packages
 sudo ./install.sh 
+
+# If you wish to install InfluxDB, Grafana and MQTT broker (otherwise will connect to your remote server running that)
+cd ~/LazyGardener
+chmod 777 ./install-mqtt-grafana-influx.sh
+sudo ./install-mqtt-grafana-influx.sh
 ```
-Now go to your Raspberry Pi IP address to port :8083 through your web browser and create user and DB
+
+If you installed DB locally go to your Raspberry Pi IP address to port :8083 through your web browser and create user and DB
 ```SQL
 CREATE USER "root" WITH PASSWORD 'root' WITH ALL PRIVILEGES
 CREATE USER "api" WITH PASSWORD 'password'
