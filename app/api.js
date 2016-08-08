@@ -1,7 +1,5 @@
 var influx = require('influx')
 var config = require('../config/config')
-var http = require('http')
-var url = require('url')
 var mqtt = require('mqtt')
 var moment = require('moment')
 
@@ -12,7 +10,7 @@ var db = influx({
   database: config.db.name
 })
 
-var client = mqtt.connect('mqtt://localhost')
+var client = mqtt.connect(config.mqtt_address)
 
 client.on('connect', function () {
   client.subscribe({'#': 1})
@@ -74,17 +72,6 @@ client.on('message', function (topic, message, packet) {
     console.log(message, e)
   }
 })
-
-http.createServer(function (request, response) {
-  if (request.url.substring(1) === 'time') {
-    response.writeHead(200, {'Content-Type': 'text/plain'})
-    response.end(Math.floor((Date.now()) / 1000).toString())
-    console.log('time request')
-  } else {
-    response.writeHead(404)
-    response.end()
-  }
-}).listen(config.api.time_port)
 
 function multiMap (val, _in, _out) {
   if (val <= _in[0]) return _out[0]

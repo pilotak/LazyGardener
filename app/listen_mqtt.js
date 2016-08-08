@@ -1,5 +1,5 @@
-var mqtt = require('mqtt').connect('mqtt://localhost')
 var config = require('../config/config')
+var mqtt = require('mqtt').connect(config.mqtt_address)
 var logger = require('../lib/logger')
 var email = require('../lib/email')
 var util = require('util')

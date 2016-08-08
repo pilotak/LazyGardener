@@ -7,7 +7,7 @@ module.exports = {
     time_port: 9615
   },
   auto_control: {
-    enabled: true,
+    enabled: false,
     interval: '*/30 * * * *', // in CRON like format
     weather: {
       enabled: false,
@@ -63,6 +63,7 @@ module.exports = {
     BH1750_addr: 0x23,
     hub_addr: 0x04
   },
+  mqtt_address: 'mqtt://192.168.0.1',
   probe: [
     {
       id: 1,
@@ -76,6 +77,33 @@ module.exports = {
     {
       id: 2,
       location: 1,
+      calibration: [[
+        1050, 900 // in
+      ], [
+        0, 100 // out
+      ]]
+    },
+    {
+      id: 3,
+      location: 2,
+      calibration: [[
+        1050, 900 // in
+      ], [
+        0, 100 // out
+      ]]
+    },
+    {
+      id: 4,
+      location: 2,
+      calibration: [[
+        1050, 900 // in
+      ], [
+        0, 100 // out
+      ]]
+    },
+    {
+      id: 5,
+      location: 3,
       calibration: [[
         1050, 900 // in
       ], [
@@ -120,7 +148,7 @@ module.exports = {
   },
   watch_batteries: {
     enabled: true, // will watch and send email
-    min: 3.1,
+    min: 20,
     subject: 'Stav baterií je nízký'
   }
 }
