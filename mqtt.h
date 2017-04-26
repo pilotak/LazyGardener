@@ -51,15 +51,12 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
 }
 
 bool send_state(unsigned int valve, bool state){
-  char buffer[30];
-  StaticJsonBuffer<30> outBuffer;
+  char buffer[50];
+  StaticJsonBuffer<50> outBuffer;
   JsonObject& outData = outBuffer.createObject();
 
-  char key[7] = "valve";
-  key[5] = (char)valve + '0';
-  key[6] = '\0';
-
-  outData.set(key, (byte)state);
+  outData["valve"] = valve;
+  outData["state"] = (byte)state;
 
   #if defined(DEBUG)
     Serial.println(F("Sending: "));
