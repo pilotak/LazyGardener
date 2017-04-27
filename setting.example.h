@@ -17,7 +17,7 @@
 #define MAX_RELAY_TIMEOUT 1800000 // 30min
 
 const unsigned long default_relay_timeout[NO_OF_RELAYS] = {
-  5000, // 360000 6min herbs
+  360000, // 6min herbs
   600000, // 10min fruit
   900000, // 15min flowers
   420000, // 7min veg

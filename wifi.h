@@ -1,5 +1,7 @@
 bool wifiReconnect(){
   if(WiFi.status() != WL_CONNECTED){
+    digitalWrite(LED_INFO_PIN, LOW);
+    
     #if defined(DEBUG)
       Serial.print(F("Connecting to "));
       Serial.print(WIFI_SSID);
@@ -19,6 +21,7 @@ bool wifiReconnect(){
         #if defined(DEBUG)
           Serial.println(F("WiFi connection timeout"));
         #endif
+        
         return false;
       }
     }
@@ -51,7 +54,7 @@ bool wifiReconnect(){
     #endif
     ArduinoOTA.begin();
   }
-
+  digitalWrite(LED_INFO_PIN, HIGH);
   return true;
 }
 
