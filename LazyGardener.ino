@@ -5,8 +5,8 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 
-#include "fn.h"
 #include "pins.h"
+#include "fn.h"
 #include "setting.h"
 #include "wifi.h"
 #include "mqtt.h"
@@ -34,6 +34,8 @@ void setup() {
 
   if(wifiReconnect()) setupMqtt();
   else ESP.restart();
+
+  setupBlinker();
 }
 
 void loop() {
@@ -48,5 +50,8 @@ void loop() {
     if(mqtt_connected){
       mqtt.loop();
     }
+  }
+  else {
+    digitalWrite(LED_INFO_PIN, LOW);
   }
 }

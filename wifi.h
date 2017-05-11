@@ -54,7 +54,6 @@ bool wifiReconnect(){
     #endif
     ArduinoOTA.begin();
   }
-  digitalWrite(LED_INFO_PIN, HIGH);
   return true;
 }
 

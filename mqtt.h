@@ -71,11 +71,13 @@ bool send_state(unsigned int valve, bool state){
 void setupMqtt(){
   mqtt.setServer(MQTT_SERVER, MQTT_PORT);
   mqtt.setCallback(mqttCallback);
+  blink_enabled = true;
 }
 
 bool mqttReconnect(){
   static unsigned long lastReconnectAttempt = 0;
    if (!mqtt.connected()) {
+    blink_enabled = true;
     unsigned long now = millis();
     
     if (now - lastReconnectAttempt > CONNECTION_INTERVAL) {
@@ -100,7 +102,8 @@ bool mqttReconnect(){
       return mqtt.connected();
     }
   }
-
+  blink_enabled = false;
+  digitalWrite(LED_INFO_PIN, HIGH);
   return true; 
 }
 
