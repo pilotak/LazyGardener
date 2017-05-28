@@ -14,8 +14,10 @@ bool blink_state = false;
 volatile bool blink_enabled = true;
 #define blink_interval 250
 
-bool send_state(unsigned int valve, bool state);
-bool set_valve(unsigned int valve, bool state, unsigned int time = 0);
+const size_t bufferSize = JSON_OBJECT_SIZE(3) + 40; // according to https://bblanchon.github.io/ArduinoJson/assistant/
+
+bool send_state(int valve, bool state);
+bool set_valve(int valve, bool state, unsigned int time = 0);
 
 bool wifiReconnect();
 void mqttCallback(char* topic, byte* payload, unsigned int length);

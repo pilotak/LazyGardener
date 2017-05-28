@@ -3,6 +3,8 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <PubSubClient.h>
+
+#define ARDUINOJSON_ENABLE_PROGMEM 0
 #include <ArduinoJson.h>
 
 #include "pins.h"
@@ -40,7 +42,7 @@ void setup() {
 
 void loop() {
   if(relay_on > -1){
-    if(millis() - relay_last_on >= relay_timeout) set_valve(relay_on + 1, false);
+    if(millis() - relay_last_on >= relay_timeout) set_valve(relay_on, false);
   }
   
   if(wifiReconnect()) {

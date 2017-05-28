@@ -8,8 +8,7 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
     }
     Serial.println();
   #endif
-
-  StaticJsonBuffer<100> inBuffer;
+  DynamicJsonBuffer inBuffer(bufferSize);
   JsonObject& inData = inBuffer.parseObject(payload);
   
   
@@ -21,25 +20,9 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   }
 
   if(inData.containsKey("status")) {
-    char buffer[100];
-    StaticJsonBuffer<100> outBuffer;
-    JsonObject& outData = outBuffer.createObject();
-  
-    outData["valve1"] = (relay_on == 0 ? 1: 0);
-    outData["valve2"] = (relay_on == 1 ? 1: 0);
-    outData["valve3"] = (relay_on == 2 ? 1: 0);
-    outData["valve4"] = (relay_on == 3 ? 1: 0);
-    outData["valve5"] = (relay_on == 4 ? 1: 0);
-    outData["valve6"] = (relay_on == 5 ? 1: 0);
-
-    #if defined(DEBUG)
-      Serial.println(F("Sending: "));
-      outData.prettyPrintTo(Serial);
-      Serial.println();
-    #endif
-    
-    outData.printTo(buffer, sizeof(buffer));
-    mqtt.publish(MQTT_STATE_TOPIC, buffer);
+    for(unsigned int i = 0; i < 6; i++){
+      send_state(i,(relay_on == i ? 1 : 0));
+    }
   }
   else if(inData.containsKey("valve") && inData.containsKey("state")){
     unsigned int valve = inData.get<int>("valve");
@@ -50,9 +33,9 @@ void mqttCallback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
-bool send_state(unsigned int valve, bool state){
-  char buffer[50];
-  StaticJsonBuffer<50> outBuffer;
+bool send_state(int valve, bool state){
+  char buffer[100];
+  StaticJsonBuffer<100> outBuffer;
   JsonObject& outData = outBuffer.createObject();
 
   outData["valve"] = valve;
@@ -65,6 +48,7 @@ bool send_state(unsigned int valve, bool state){
   #endif
   
   outData.printTo(buffer, sizeof(buffer));
+  delay(1);
   return mqtt.publish(MQTT_STATE_TOPIC, buffer);
 }
 
@@ -93,6 +77,11 @@ bool mqttReconnect(){
         #if defined(DEBUG)
           Serial.println(F("OK"));
         #endif
+
+        // send state on reconnect
+        for(unsigned int i = 0; i < 6; i++){
+          send_state(i,(relay_on == i ? 1 : 0));
+        }
       }
       else {
         #if defined(DEBUG)
