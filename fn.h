@@ -1,5 +1,5 @@
 WiFiClient espClient;
-PubSubClient mqtt(espClient);
+PubSubClient mqtt(espClient, MQTT_SERVER, MQTT_PORT);
 
 hw_timer_t * timer = NULL;
 volatile SemaphoreHandle_t makeBlink;
@@ -20,7 +20,7 @@ bool send_state(int valve, bool state);
 bool set_valve(int valve, bool state, unsigned int time = 0);
 
 bool wifiReconnect();
-void mqttCallback(char* topic, byte* payload, unsigned int length);
+void mqttCallback(const MQTT::Publish& pub);
 void setupMqtt();
 bool mqttReconnect();
 

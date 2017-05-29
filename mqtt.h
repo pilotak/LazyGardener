@@ -1,15 +1,15 @@
-void mqttCallback(char* topic, byte* payload, unsigned int length) {
+void mqttCallback(const MQTT::Publish& pub) {
   #if defined(DEBUG)
     Serial.print("Message arrived [");
-    Serial.print(topic);
+    Serial.print(pub.payload_string());
     Serial.print("] ");
-    for (int i = 0; i < length; i++) {
-      Serial.print((char)payload[i]);
+    for (int i = 0; i < pub.payload_len(); i++) {
+      Serial.print((char)pub.payload()[i]);
     }
     Serial.println();
   #endif
   DynamicJsonBuffer inBuffer(bufferSize);
-  JsonObject& inData = inBuffer.parseObject(payload);
+  JsonObject& inData = inBuffer.parseObject(pub.payload());
   
   
   if (!inData.success()) {
@@ -48,13 +48,11 @@ bool send_state(int valve, bool state){
   #endif
   
   outData.printTo(buffer, sizeof(buffer));
-  delay(1);
-  return mqtt.publish(MQTT_STATE_TOPIC, buffer);
+  return mqtt.publish(MQTT::Publish(MQTT_STATE_TOPIC, buffer).set_qos(1));
 }
 
 void setupMqtt(){
-  mqtt.setServer(MQTT_SERVER, MQTT_PORT);
-  mqtt.setCallback(mqttCallback);
+  mqtt.set_callback(mqttCallback);
   blink_enabled = true;
 }
 
@@ -70,7 +68,7 @@ bool mqttReconnect(){
       #endif
       lastReconnectAttempt = now;
 
-      if (mqtt.connect(DEVICE_NAME, MQTT_USER, MQTT_PASSWORD)) {
+      if (mqtt.connect(MQTT::Connect(DEVICE_NAME).set_auth(MQTT_USER, MQTT_PASSWORD))) {
         mqtt.subscribe(MQTT_CMD_TOPIC);
         lastReconnectAttempt = 0;
 

@@ -4,12 +4,12 @@
 #define WIFI_SSID "***"
 #define WIFI_PASSWORD "******"
 
-#define MQTT_SERVER "xxx.xxx.xxx.xxx"
+IPAddress MQTT_SERVER(192, 168, 0, 100);
 #define MQTT_PORT 1883
 #define MQTT_USER "***"
 #define MQTT_PASSWORD "******"
-#define MQTT_CMD_TOPIC "LazyGardener/cmd"
-#define MQTT_STATE_TOPIC "LazyGardener/state"
+#define MQTT_CMD_TOPIC DEVICE_NAME "/cmd"
+#define MQTT_STATE_TOPIC DEVICE_NAME "/state"
 
 #define CONNECTION_INTERVAL 5000      // 5s
 #define WIFI_CONNECTION_TIMEOUT 20000 // 20s

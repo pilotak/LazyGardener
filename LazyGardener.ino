@@ -3,13 +3,11 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <PubSubClient.h>
-
-#define ARDUINOJSON_ENABLE_PROGMEM 0
 #include <ArduinoJson.h>
 
 #include "pins.h"
-#include "fn.h"
 #include "setting.h"
+#include "fn.h"
 #include "wifi.h"
 #include "mqtt.h"
 #include "valve.h"
