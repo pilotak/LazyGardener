@@ -69,7 +69,8 @@ bool mqttReconnect(){
       lastReconnectAttempt = now;
 
       if (mqtt.connect(MQTT::Connect(DEVICE_NAME).set_auth(MQTT_USER, MQTT_PASSWORD))) {
-        mqtt.subscribe(MQTT_CMD_TOPIC);
+        mqtt.subscribe(MQTT::Subscribe()
+                  .add_topic(MQTT_CMD_TOPIC, 1));
         lastReconnectAttempt = 0;
 
         #if defined(DEBUG)
@@ -85,6 +86,7 @@ bool mqttReconnect(){
         #if defined(DEBUG)
           Serial.println(F("failed"));
         #endif
+        return false;
       }
       return mqtt.connected();
     }
