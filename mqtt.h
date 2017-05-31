@@ -8,47 +8,45 @@ void mqttCallback(const MQTT::Publish& pub) {
     }
     Serial.println();
   #endif
-  DynamicJsonBuffer inBuffer(bufferSize);
-  JsonObject& inData = inBuffer.parseObject(pub.payload());
   
-  
-  if (!inData.success()) {
-    #if defined(DEBUG)
-      Serial.println(F("parseObject() failed"));
-    #endif
-    return;
-  }
+  String topic = pub.topic();
 
-  if(inData.containsKey("status")) {
-    for(unsigned int i = 0; i < 6; i++){
-      send_state(i,(relay_on == i ? 1 : 0));
+  if(topic == MQTT_STATUS_TOPIC) {
+    for(uint8_t i = 0; i < NO_OF_RELAYS; i++){
+      send_state(i, (relay_on == i ? 1 : 0));
     }
   }
-  else if(inData.containsKey("valve") && inData.containsKey("state")){
-    unsigned int valve = inData.get<int>("valve");
-    bool state = inData.get<bool>("state");
-    unsigned int time = inData.get<int>("time");
-    
-    set_valve(valve, state, time);
+  else if(topic.substring(0,topic.length()-1) == MQTT_RELAY_TOPIC ){
+    uint8_t relay = topic.substring(topic.length()-1).toInt();
+
+    String topic = pub.payload_string();
+
+    if(topic == MQTT_STATE_ON) set_valve(relay, HIGH);
+    else if(topic == MQTT_STATE_OFF) set_valve(relay, LOW);
   }
 }
 
 bool send_state(int valve, bool state){
-  char buffer[100];
-  StaticJsonBuffer<100> outBuffer;
-  JsonObject& outData = outBuffer.createObject();
+  char buffer[20];
+  String topic = MQTT_RELAY_TOPIC;
+  topic.concat(valve);
+  topic.concat(MQTT_RELAY_TOPIC_STATE);
 
-  outData["valve"] = valve;
-  outData["state"] = (byte)state;
+  if(state) {
+    memcpy(buffer, MQTT_STATE_ON, sizeof(MQTT_STATE_ON));
+  }
+  else {
+    memcpy(buffer, MQTT_STATE_OFF, sizeof(MQTT_STATE_OFF));
+  }
 
   #if defined(DEBUG)
-    Serial.println(F("Sending: "));
-    outData.prettyPrintTo(Serial);
-    Serial.println();
+    Serial.print(F("Sending valve"));
+    Serial.print(valve);
+    Serial.print(F(" state: "));
+    Serial.println((state ? MQTT_STATE_ON : MQTT_STATE_OFF));
   #endif
   
-  outData.printTo(buffer, sizeof(buffer));
-  return mqtt.publish(MQTT::Publish(MQTT_STATE_TOPIC, buffer).set_qos(1));
+  return mqtt.publish(MQTT::Publish(topic, buffer).set_retain().set_qos(1));
 }
 
 void setupMqtt(){
@@ -70,7 +68,14 @@ bool mqttReconnect(){
 
       if (mqtt.connect(MQTT::Connect(DEVICE_NAME).set_auth(MQTT_USER, MQTT_PASSWORD))) {
         mqtt.subscribe(MQTT::Subscribe()
-                  .add_topic(MQTT_CMD_TOPIC, 1));
+                  .add_topic(MQTT_STATUS_TOPIC, 1));
+                  
+        for(uint8_t i = 0; i < NO_OF_RELAYS; i++){
+          String topic = MQTT_RELAY_TOPIC;
+          topic.concat(i);
+          mqtt.subscribe(MQTT::Subscribe().add_topic(topic, 1));
+        }
+        
         lastReconnectAttempt = 0;
 
         #if defined(DEBUG)

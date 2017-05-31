@@ -8,13 +8,15 @@ IPAddress MQTT_SERVER(192, 168, 0, 100);
 #define MQTT_PORT 1883
 #define MQTT_USER "***"
 #define MQTT_PASSWORD "******"
-#define MQTT_CMD_TOPIC DEVICE_NAME "/cmd"
-#define MQTT_STATE_TOPIC DEVICE_NAME "/state"
+#define MQTT_STATUS_TOPIC DEVICE_NAME "/status"
+#define MQTT_RELAY_TOPIC DEVICE_NAME "/relay" // will result ie. wifi-relay/relay* where aterisk is relay number
+#define MQTT_RELAY_TOPIC_STATE  "/state" // will result ie. wifi-relay/relay1/state
+
+#define MQTT_STATE_ON "ON"
+#define MQTT_STATE_OFF "OFF"
 
 #define CONNECTION_INTERVAL 5000      // 5s
 #define WIFI_CONNECTION_TIMEOUT 20000 // 20s
-
-#define MAX_RELAY_TIMEOUT 1800000 // 30min
 
 const unsigned long default_relay_timeout[NO_OF_RELAYS] = {
   360000, // 6min herbs

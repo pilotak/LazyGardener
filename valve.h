@@ -1,4 +1,4 @@
-bool set_valve(int valve, bool state, unsigned int time){
+bool set_valve(int valve, bool state){
   if(valve > -1 && valve <= 6){
     #if defined(DEBUG)
       Serial.print(F("Turning 24V "));
@@ -17,8 +17,7 @@ bool set_valve(int valve, bool state, unsigned int time){
       send_state(relay_on, false);
     }
 
-    if(time > 0 && time <= MAX_RELAY_TIMEOUT) relay_timeout = time; 
-    else relay_timeout = default_relay_timeout[valve-1];
+    relay_timeout = default_relay_timeout[valve];
 
     if(state) relay_last_on = millis();
 

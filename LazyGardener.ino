@@ -3,7 +3,6 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #include <PubSubClient.h>
-#include <ArduinoJson.h>
 
 #include "pins.h"
 #include "setting.h"
