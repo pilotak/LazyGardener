@@ -1,15 +1,15 @@
 #define RELAY1_PIN 15
-#define RELAY2_PIN 13
-#define RELAY3_PIN 12
-#define RELAY4_PIN 27
+#define RELAY2_PIN 12
+#define RELAY3_PIN 27
+#define RELAY4_PIN 13
 #define RELAY5_PIN 14
 #define RELAY6_PIN 26
 #define RELAY_24V_PIN 25
 
-#define LED1_PIN 18
-#define LED2_PIN 5
-#define LED3_PIN 19
-#define LED4_PIN 23
+#define LED1_PIN 19
+#define LED2_PIN 23
+#define LED3_PIN 18
+#define LED4_PIN 5
 #define LED5_PIN 17
 #define LED6_PIN 16
 #define LED_INFO_PIN 22

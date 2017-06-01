@@ -4,7 +4,7 @@ bool set_valve(int valve, bool state){
       Serial.print(F("Turning 24V "));
       Serial.println((state ? "ON" : "OFF"));
     #endif
-    digitalWrite(RELAY_24V_PIN, state);
+    if(state) digitalWrite(RELAY_24V_PIN, state);
     
     if(state && relay_on > -1){ // only one can be on at the time, if another is already on, turn it off
       #if defined(DEBUG)
@@ -39,7 +39,10 @@ bool set_valve(int valve, bool state){
     relay_on = (state ? valve : -1);
     digitalWrite(relay[valve], state);
     digitalWrite(led[valve], state);
+    
     send_state(valve, state);
+    
+    if(!state) digitalWrite(RELAY_24V_PIN, state);
 
     return true;
   }

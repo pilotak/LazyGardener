@@ -46,7 +46,14 @@ bool send_state(int valve, bool state){
     Serial.println((state ? MQTT_STATE_ON : MQTT_STATE_OFF));
   #endif
   
-  return mqtt.publish(MQTT::Publish(topic, buffer).set_retain().set_qos(1));
+  bool ok = mqtt.publish(MQTT::Publish(topic, buffer).set_retain().set_qos(1));
+
+  #if defined(DEBUG)
+    if(ok) Serial.println(F("OK"));
+    else Serial.println(F("FAILED"));
+  #endif
+
+  return ok;
 }
 
 void setupMqtt(){

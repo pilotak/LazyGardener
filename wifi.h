@@ -19,9 +19,9 @@ bool wifiReconnect(){
 
       if (millis() - now >= WIFI_CONNECTION_TIMEOUT) {
         #if defined(DEBUG)
-          Serial.println(F("WiFi connection timeout"));
+          Serial.println(F("WiFi connection timeout, restarting..."));
         #endif
-        
+        ESP.restart();
         return false;
       }
     }
