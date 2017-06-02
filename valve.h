@@ -39,10 +39,13 @@ bool set_valve(int valve, bool state){
     relay_on = (state ? valve : -1);
     digitalWrite(relay[valve], state);
     digitalWrite(led[valve], state);
+
+    if(!state) {
+      delay(300);
+      digitalWrite(RELAY_24V_PIN, state);
+    }
     
     send_state(valve, state);
-    
-    if(!state) digitalWrite(RELAY_24V_PIN, state);
 
     return true;
   }
