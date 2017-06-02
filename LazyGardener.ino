@@ -28,7 +28,7 @@ void setup() {
 
   pinMode(RELAY_24V_PIN, OUTPUT);
   pinMode(LED_INFO_PIN, OUTPUT);
-  digitalWrite(RELAY_24V_PIN, LOW);
+  digitalWrite(RELAY_24V_PIN, HIGH);
   digitalWrite(LED_INFO_PIN, LOW);
 
   if(wifiReconnect()) setupMqtt();
