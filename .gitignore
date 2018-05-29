@@ -31,3 +31,6 @@ bower_components
 *.sublime-project
 *.sublime-workspace
 sftp-config.json
+.piolibdeps
+.pioenvs
+LazyGardener/setting.h
