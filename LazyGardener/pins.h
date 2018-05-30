@@ -1,9 +1,9 @@
 #define RELAY1_PIN 12
-#define RELAY2_PIN 26
+#define RELAY2_PIN 27
 #define RELAY3_PIN 15
 #define RELAY4_PIN 13
 #define RELAY5_PIN 14
-#define RELAY6_PIN 27
+#define RELAY6_PIN 26
 #define RELAY_24V_PIN 25
 
 #define LED1_PIN 19
@@ -13,6 +13,8 @@
 #define LED5_PIN 17
 #define LED6_PIN 16
 #define LED_INFO_PIN 22
+
+#define SPARE_PIN 4
 
 const byte NO_OF_RELAYS  = 6;
 
