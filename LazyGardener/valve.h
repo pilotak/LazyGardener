@@ -4,6 +4,7 @@ bool set_valve(int valve, bool state) {
         telnetSerial(sbuf);
 
         digitalWrite(RELAY_24V_PIN, state);
+        delay(5);
 
         if (state && relay_on > -1) {  // only one can be on at the time, if another is already on, turn it off
             snprintf(sbuf, sizeof(sbuf), "Turning valve %i OFF\n", relay_on);
